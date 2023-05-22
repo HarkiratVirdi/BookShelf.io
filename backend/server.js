@@ -1,14 +1,26 @@
-const path = require("path");
-const express = require('express');
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
+import ConnectDB from "./config/db.js";
+
+dotenv.config();
+
 const app = express();
-const dotenv = require('dotenv');
-dotenv.config({ path: path.resolve(__dirname, ".env") });
-const port = process.env.PORT;
+app.use(express.json());
+ConnectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}`)
-})
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT;
+
+app.listen(
+  PORT,
+  console.log(`Server running on ${PORT} in ${process.env.NODE_ENV} mode`)
+);
