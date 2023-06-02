@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import SignUp from '../../components/SignUp/index.comp';
+import Layout from '../../components/Layout/index.comp';
 
-const SignUp = () => {
-  return <div>SignUp</div>;
+const SignUpPage = () => {
+  return <SignUp />;
 };
 
-export default SignUp;
+export default SignUpPage;
