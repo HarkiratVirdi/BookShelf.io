@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
-  "author": "",
+  "author": "PRJ666 Team 1",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.0.1",
