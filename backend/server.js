@@ -1,14 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
-import path from "path";
-import healthRoute from "./routes/index.js";
-import productRoutes from "./routes/productRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
-import ConnectDB from "./config/db.js";
-import bodyParser from "body-parser";
+const express = require('express');
+const healthRoute = require('./routes/index');
+const productRoutes = require('./routes/productRoutes');
+const userRoutes = require('./routes/userRoutes');
+const ConnectDB = require('./config/db.js');
+const { notFound, errorHandler } = require('./middlewares/errorMiddleware.js');
+const bodyParser = require('body-parser');
 
-dotenv.config();
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
