@@ -1,8 +1,8 @@
-import User from "../models/user.js";
-import { createSuccessResponse, createErrorResponse } from '../response.js';
+const User  = require('../models/user.js');
+const { createSuccessResponse, createErrorResponse } = require('../response.js');
 
 
-const register = (req, res) => {
+exports.register = (req, res) => {
     User.register(
         new User({ 
             email: req.body.email,
@@ -26,5 +26,3 @@ const register = (req, res) => {
         }
     );
 };
-
-export { register };

@@ -1,11 +1,11 @@
-const createSuccessResponse = (data) => {
+module.exports.createSuccessResponse = (data) => {
   return {
     status: 'ok',
     ...data,
   };
 };
   
-const createErrorResponse = (code, message) => {
+module.exports.createErrorResponse = (code, message) => {
   return {
     status: 'error',
     error: {
@@ -14,5 +14,3 @@ const createErrorResponse = (code, message) => {
     },
   };
 };
-
-export { createSuccessResponse, createErrorResponse };
