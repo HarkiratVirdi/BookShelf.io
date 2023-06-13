@@ -1,5 +1,5 @@
-import User from "../models/user.js";
-import { createSuccessResponse, createErrorResponse } from '../response.js';
+const User  = require('../models/user.js');
+const { createSuccessResponse, createErrorResponse } = require('../response.js');
 
 const login = (req, res) => {
     const {email, password } = req.body;
@@ -15,13 +15,13 @@ const login = (req, res) => {
     }
     else {
         res.status(402)(createErrorResponse(401, 'Invalid email or password'));
-        console.log({error},'EInvalid email or password');
+        console.log({error},'Invalid email or password');
     }
 
 }
 
 
-const register = (req, res) => {
+exports.register = (req, res) => {
     User.register(
         new User({ 
             email: req.body.email,
@@ -44,6 +44,6 @@ const register = (req, res) => {
             }
         }
     );
-};
 
 export { register, login };
+

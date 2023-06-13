@@ -1,11 +1,11 @@
-import express from "express";
+const express = require('express');
 const router = express.Router();
-import { register, login } from '../controllers/userController.js';
-import bodyParser from "body-parser";
+const userController = require('../controllers/userController');
+const bodyParser = require('body-parser');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.post('/register', register)
+router.post('/register', userController.register);
 
 router.post('/login', login)
 
@@ -17,4 +17,4 @@ router.get("/:id", (req, res) => {
     res.json("Fetching all users");
 });
 
-export default router;
+module.exports = router;
