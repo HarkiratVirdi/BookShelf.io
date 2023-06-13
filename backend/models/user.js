@@ -38,10 +38,24 @@ const userSchema = new mongoose.Schema({
     country: {
       type: String,
       required: true
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
     }
 });
 
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
+
+userSchema.methods.comparePassword = function(enteredPassword){
+  return enteredPassword === this.password;
+}
 
 const User = mongoose.model('user', userSchema);
 

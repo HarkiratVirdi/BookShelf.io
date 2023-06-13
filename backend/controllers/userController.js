@@ -1,6 +1,25 @@
 import User from "../models/user.js";
 import { createSuccessResponse, createErrorResponse } from '../response.js';
 
+const login = (req, res) => {
+    const {email, password } = req.body;
+
+    const user = User.findOne({ email });
+
+    if(user && (user.comparePassowrd(password))) {
+        res.json({
+            _id: user._id,
+            email: user.email,
+            password: user.password
+        })
+    }
+    else {
+        res.status(402)(createErrorResponse(401, 'Invalid email or password'));
+        console.log({error},'EInvalid email or password');
+    }
+
+}
+
 
 const register = (req, res) => {
     User.register(
@@ -27,4 +46,4 @@ const register = (req, res) => {
     );
 };
 
-export { register };
+export { register, login };
