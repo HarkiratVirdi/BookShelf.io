@@ -1,7 +1,13 @@
 import React from 'react';
-import { Text, PasswordInput, PasswordInputProps, Button } from '@mantine/core';
+import {
+  Text,
+  PasswordInput,
+  PasswordInputProps,
+  Button,
+  Grid,
+  rem,
+} from '@mantine/core';
 import EmailWithSuggestions from '../EmailWithSuggestions/index.comp';
-import { Grid, rem } from '@mantine/core';
 import Layout from '../../Layout/index.comp';
 
 function InputPassword({ className, style, ...others }: PasswordInputProps) {
@@ -19,7 +25,7 @@ function InputPassword({ className, style, ...others }: PasswordInputProps) {
   );
 }
 
-const Login = () => {
+const Login = ({ changeToLoginPage }: any) => {
   return (
     <Grid
       justify="center"
@@ -36,12 +42,18 @@ const Login = () => {
           <br />
           <InputPassword />
           <Button mt={'sm'}>Login</Button>
+          <p
+            onClick={() => changeToLoginPage(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            Not a user yet? Register Now
+          </p>
         </Layout>
       </Grid.Col>
       <Grid.Col span={6}>
         <img
           src="./signUpCover.jpg"
-          style={{ objectFit: 'cover', height: '100vh' }}
+          style={{ objectFit: 'cover', height: '100vh', width: '100%' }}
           alt=""
         />
       </Grid.Col>
