@@ -4,7 +4,7 @@ module.exports.createSuccessResponse = (data) => {
     ...data,
   };
 };
-  
+
 module.exports.createErrorResponse = (code, message) => {
   return {
     status: 'error',
