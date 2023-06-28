@@ -10,12 +10,10 @@ const bodyParser = require('body-parser');
 app.use(express.json());
 app.use(bodyParser.json());
 
-
 //routes
-app.use("/", healthRoute);
-app.use("/api/products", productRoutes);
-app.use("/api/users", userRoutes);
-
+app.use('/', healthRoute);
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
