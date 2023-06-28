@@ -3,7 +3,7 @@ const { hostname } = require('os');
 const { createSuccessResponse } = require('../response');
 const router = express.Router();
 // version and author from package.json
-const { description, version, author } = require('../package.json');
+const { description, version, author } = require('../../package.json');
 
 router.get('/', (req, res) => {
     //no cache
