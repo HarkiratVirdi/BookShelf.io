@@ -1,13 +1,13 @@
 const User  = require('../models/user.js');
 const { createSuccessResponse, createErrorResponse } = require('../response.js');
-const { default: generateToken } = require('../utils/generateToken.js');
+//const { default: generateToken } = require('../utils/generateToken.js');
 
 exports.login = (req, res) => {
     const {email, password } = req.body;
 
     const user = User.findOne({ email });
 
-    if(user && (user.comparePassowrd(password))) {
+    if(user && (user.comparePassword(password))) {
         res.json({
             email: user.email,
             password: user.password
