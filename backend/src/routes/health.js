@@ -4,6 +4,7 @@ const { createSuccessResponse } = require('../response');
 const router = express.Router();
 // version and author from package.json
 const { description, version, author } = require('../../package.json');
+const logger = require('../logger');
 
 router.get('/', (req, res) => {
   //no cache
@@ -16,7 +17,7 @@ router.get('/', (req, res) => {
       author,
     })
   );
-  console.log('Health check: success');
+  logger.info('Health check: success');
 });
 
 module.exports = router;

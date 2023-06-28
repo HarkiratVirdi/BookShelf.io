@@ -18,10 +18,10 @@ exports.register = (req, res) => {
     function (error) {
       if (error) {
         res.status(402).json(createErrorResponse(401, 'Error creating a user'));
-        console.log({ error }, 'Error creating a user');
+        logger.error({ error }, 'Error creating a user');
       } else {
         res.status(201).json(createSuccessResponse({ message: 'User is successfully registered' }));
-        console.log('Register function: success');
+        logger.info('Register function: success');
       }
     }
   );
