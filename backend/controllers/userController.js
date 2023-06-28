@@ -1,7 +1,8 @@
 const User  = require('../models/user.js');
 const { createSuccessResponse, createErrorResponse } = require('../response.js');
+const { default: generateToken } = require('../utils/generateToken.js');
 
-const login = (req, res) => {
+exports.login = (req, res) => {
     const {email, password } = req.body;
 
     const user = User.findOne({ email });
@@ -44,6 +45,6 @@ exports.register = (req, res) => {
             }
         }
     );
+    }
 
-export { register, login };
 

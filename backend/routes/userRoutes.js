@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/register', userController.register);
 
-router.post('/login', login)
+router.post('/login', userController.login)
 
 router.get("/", (req, res) => {
     res.json("Fetching single user");
