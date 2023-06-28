@@ -15,30 +15,11 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    addressLine1: {
-      type: String,
-      required: true
-    },
-    addressLine2: {
-      type: String,
-      required: true
-    },
-    city: {
-      type: String,
-      required: true
-    },
-    province: {
-      type: String,
-      required: true
-    },
-    postalCode: {
-      type: String,
-      required: true
-    },
-    country: {
-      type: String,
-      required: true
-    }
+    address: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'address',
+      required: false
+  },
 });
 
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
