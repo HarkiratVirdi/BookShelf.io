@@ -9,7 +9,6 @@ exports.login = (req, res) => {
 
     if(user && (user.comparePassowrd(password))) {
         res.json({
-            _id: user._id,
             email: user.email,
             password: user.password
         })
