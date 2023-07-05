@@ -7,8 +7,10 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/register', userController.register);
 
-router.get('/', (req, res) => {
-  res.json('Fetching single user');
+router.post('/login', function(req, res) {userController.login})
+
+router.get("/", (req, res) => {
+    res.json("Fetching single user");
 });
 
 router.get('/:id', (req, res) => {
