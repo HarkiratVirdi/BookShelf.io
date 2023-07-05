@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
 
-userSchema.methods.comparePassword = function (enteredPassword) {
+userSchema.methods.comparePassword = function(enteredPassword) {
   return enteredPassword === this.password;
 }
 
