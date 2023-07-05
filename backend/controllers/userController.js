@@ -1,16 +1,20 @@
 const User  = require('../models/user.js');
 const { createSuccessResponse, createErrorResponse } = require('../response.js');
 //const { default: generateToken } = require('../utils/generateToken.js');
+const asyncHandler = require('express-async-handler');
+const { generateToken } = require('../utils/generateToken.js');
 
-exports.login = (req, res) => {
+exports.login = asyncHandler(async (req, res) => {
     const {email, password } = req.body;
 
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if(user && (user.comparePassword(password))) {
+    if(user && (await user.comparePassword(password))) {
         res.json({
+            _id: user._id,
             email: user.email,
-            password: user.password
+            password: user.password,
+            token: generateToken(user._id)
         })
     }
     else {
@@ -18,7 +22,7 @@ exports.login = (req, res) => {
         console.log({error},'Invalid email or password');
     }
 
-}
+});
 
 
 exports.register = (req, res) => {
