@@ -7,7 +7,7 @@ const sampleProduct: IBook = {
   author: 'JK rowling',
   price: '$100',
   seller: 'Unknown',
-  image: './SampleImage.png',
+  images: ['./SampleImage.png'],
   genre: 'Horror',
 };
 

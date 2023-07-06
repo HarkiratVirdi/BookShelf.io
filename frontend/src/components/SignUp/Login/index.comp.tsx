@@ -42,11 +42,14 @@ const Login = ({ changeToLoginPage }: any) => {
           <br />
           <InputPassword />
           <Button mt={'sm'}>Login</Button>
-          <p
-            onClick={() => changeToLoginPage(true)}
-            style={{ cursor: 'pointer' }}
-          >
-            Not a user yet? Register Now
+          <p>
+            Not a user yet?
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => changeToLoginPage(false)}
+            >
+              Register Now
+            </span>
           </p>
         </Layout>
       </Grid.Col>
