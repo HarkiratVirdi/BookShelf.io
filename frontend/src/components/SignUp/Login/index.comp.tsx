@@ -40,6 +40,7 @@ const useStyles = createStyles((theme) => ({
 
 const Login = ({ changeToLoginPage }: any) => {
   const { classes } = useStyles();
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>

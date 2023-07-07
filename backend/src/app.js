@@ -5,17 +5,18 @@ const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware.js');
 const bodyParser = require('body-parser');
-//const cors = require('cors');
+const cors = require('cors');
 
 //logs
 const logger = require('./logger');
 const pino = require('pino-http')({ logger });
 
+
 //middlewares
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(pino);
-//app.use(cors());
+app.use(cors());
 
 //routes
 app.use('/', healthRoute);
