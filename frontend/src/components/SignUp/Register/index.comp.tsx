@@ -1,65 +1,92 @@
-import React, { useState } from 'react';
-import { PasswordStrength } from './PasswordWithValidation/index.comp';
-import { Button, Grid, rem } from '@mantine/core';
-import Layout from '../../Layout/index.comp';
-import EmailWithSuggestions from '../EmailWithSuggestions/index.comp';
-import { Input } from '@mantine/core';
+import {
+  Paper,
+  createStyles,
+  TextInput,
+  PasswordInput,
+  Checkbox,
+  Button,
+  Title,
+  Text,
+  Anchor,
+  rem,
+} from '@mantine/core';
+
+const useStyles = createStyles((theme) => ({
+  wrapper: {
+    minHeight: '100vh',
+    backgroundSize: 'cover',
+    backgroundImage:
+      'url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)',
+  },
+
+  form: {
+    borderRight: `${rem(1)} solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
+    }`,
+    minHeight: '100vh',
+    maxWidth: rem(450),
+    paddingTop: rem(80),
+
+    [theme.fn.smallerThan('sm')]: {
+      maxWidth: '100%',
+    },
+  },
+
+  title: {
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+  },
+}));
 
 const Register = ({ changeToLoginPage }: any) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const onRegisterClick = (e: React.MouseEvent) => {
-    console.log('register logs', { name, email, password });
-  };
-
+  const { classes } = useStyles();
   return (
-    <Grid
-      justify="center"
-      align="center"
-      gutter={5}
-      gutterXs="md"
-      gutterMd="md"
-      gutterXl={50}
-    >
-      <Grid.Col style={{ minHeight: rem(80) }} span={6}>
-        <Layout>
-          <div className="text-3xl">Register</div>
-          <Input.Wrapper id="name" withAsterisk label="Name">
-            <Input
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-              id="name"
-              placeholder="Your name"
-            />
-          </Input.Wrapper>
-
-          <EmailWithSuggestions setEmail={setEmail} email={email} />
-          <br />
-          <PasswordStrength password={password} setPassword={setPassword} />
-          <Button my={'sm'} onClick={onRegisterClick}>
-            Register
-          </Button>
-          <p>
-            Already a user? &nbsp;
-            <span
-              style={{ cursor: 'pointer' }}
-              onClick={() => changeToLoginPage(true)}
-            >
-              Login Now
-            </span>
-          </p>
-        </Layout>
-      </Grid.Col>
-      <Grid.Col span={6}>
-        <img
-          src="./signUpCover.jpg"
-          style={{ objectFit: 'cover', height: '100vh', width: '100%' }}
-          alt=""
+    <div className={classes.wrapper}>
+      <Paper className={classes.form} radius={0} p={30}>
+        <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
+          Welcome to Bookshelf.io!
+        </Title>
+        <TextInput
+          label="First Name"
+          placeholder="First Name"
+          size="md"
+          mt="md"
         />
-      </Grid.Col>
-    </Grid>
+        <TextInput
+          label="Last Name"
+          placeholder="Last Name"
+          size="md"
+          mt="md"
+        />
+        <TextInput
+          label="Email address"
+          placeholder="hello@gmail.com"
+          size="md"
+          mt="md"
+        />
+        <PasswordInput
+          label="Password"
+          placeholder="Your password"
+          mt="md"
+          size="md"
+        />
+        <Checkbox label="Keep me logged in" mt="xl" size="md" />
+        <Button fullWidth mt="xl" size="md">
+          Register
+        </Button>
+
+        <Text ta="center" mt="md">
+          Don&apos;t have an account?{' '}
+          <Anchor<'a'>
+            href="#"
+            weight={700}
+            onClick={() => changeToLoginPage(true)}
+          >
+            Login
+          </Anchor>
+        </Text>
+      </Paper>
+    </div>
   );
 };
 
