@@ -5,6 +5,7 @@ import {
   Group,
   Burger,
   rem,
+  Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
@@ -60,7 +61,7 @@ interface HeaderSearchProps {
   links: { link: string; label: string }[];
 }
 
-export function HeaderSearch({ links }: HeaderSearchProps) {
+const HeaderSearch = ({ links }: HeaderSearchProps) => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
@@ -76,10 +77,13 @@ export function HeaderSearch({ links }: HeaderSearchProps) {
   ));
 
   return (
-    <Header height={56} className={classes.header} mb={120}>
+    <Header height={56} className={classes.header} mb={12}>
       <div className={classes.inner}>
         <Group>
           <Burger opened={opened} onClick={toggle} size="sm" />
+          <Title color="darkBlue" order={3}>
+            Bookshelf.io
+          </Title>
         </Group>
 
         <Group>
@@ -104,4 +108,6 @@ export function HeaderSearch({ links }: HeaderSearchProps) {
       </div>
     </Header>
   );
-}
+};
+
+export default HeaderSearch;
