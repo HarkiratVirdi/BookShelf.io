@@ -8,6 +8,7 @@ import {
 } from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { Dispatch, SetStateAction } from 'react';
 
 function PasswordRequirement({
   meets,
@@ -49,14 +50,18 @@ function getStrength(password: string) {
   return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 0);
 }
 
-export function PasswordStrength() {
-  const [value, setValue] = useInputState('');
-  const strength = getStrength(value);
+interface IPasswordStrength {
+  password: string;
+  setPassword: Dispatch<SetStateAction<string>>;
+}
+
+export function PasswordStrength({ password, setPassword }: IPasswordStrength) {
+  const strength = getStrength(password);
   const checks = requirements.map((requirement, index) => (
     <PasswordRequirement
       key={index}
       label={requirement.label}
-      meets={requirement.re.test(value)}
+      meets={requirement.re.test(password)}
     />
   ));
   const bars = Array(4)
@@ -65,7 +70,7 @@ export function PasswordStrength() {
       <Progress
         styles={{ bar: { transitionDuration: '0ms' } }}
         value={
-          value.length > 0 && index === 0
+          password.length > 0 && index === 0
             ? 100
             : strength >= ((index + 1) / 4) * 100
             ? 100
@@ -80,8 +85,8 @@ export function PasswordStrength() {
   return (
     <div>
       <PasswordInput
-        value={value}
-        onChange={setValue}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         placeholder="Your password"
         label="Password"
         required
@@ -93,7 +98,7 @@ export function PasswordStrength() {
 
       <PasswordRequirement
         label="Has at least 6 characters"
-        meets={value.length > 5}
+        meets={password.length > 5}
       />
       {checks}
     </div>

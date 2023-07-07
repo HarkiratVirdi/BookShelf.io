@@ -1,31 +1,36 @@
-import React from 'react';
-import {
-  Text,
-  PasswordInput,
-  PasswordInputProps,
-  Button,
-  Grid,
-  rem,
-} from '@mantine/core';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Text, PasswordInput, Button, Grid, rem } from '@mantine/core';
 import EmailWithSuggestions from '../EmailWithSuggestions/index.comp';
 import Layout from '../../Layout/index.comp';
 
-function InputPassword({ className, style, ...others }: PasswordInputProps) {
+interface IInputPassword {
+  setPassword: Dispatch<SetStateAction<string>>;
+  password: string;
+}
+
+function InputPassword({ setPassword, password }: IInputPassword) {
   return (
-    <div className={className} style={style}>
+    <div>
       <Text component="label" htmlFor="your-password" size="sm" weight={500}>
         Your password
       </Text>
       <PasswordInput
         placeholder="Your password"
         id="your-password"
-        {...others}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
     </div>
   );
 }
 
 const Login = ({ changeToLoginPage }: any) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const onLogin = (e: React.MouseEvent) => {
+    console.log('login logs', { email, password });
+  };
+
   return (
     <Grid
       justify="center"
@@ -38,12 +43,14 @@ const Login = ({ changeToLoginPage }: any) => {
       <Grid.Col style={{ minHeight: rem(80) }} span={6}>
         <Layout>
           <div className="text-3xl">Login</div>
-          <EmailWithSuggestions />
+          <EmailWithSuggestions setEmail={setEmail} email={email} />
           <br />
-          <InputPassword />
-          <Button mt={'sm'}>Login</Button>
+          <InputPassword setPassword={setPassword} password={password} />
+          <Button onClick={onLogin} my={'sm'}>
+            Login
+          </Button>
           <p>
-            Not a user yet?
+            Not a user yet? &nbsp;
             <span
               style={{ cursor: 'pointer' }}
               onClick={() => changeToLoginPage(false)}

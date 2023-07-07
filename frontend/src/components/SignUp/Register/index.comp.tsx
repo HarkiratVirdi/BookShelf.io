@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PasswordStrength } from './PasswordWithValidation/index.comp';
 import { Button, Grid, rem } from '@mantine/core';
 import Layout from '../../Layout/index.comp';
 import EmailWithSuggestions from '../EmailWithSuggestions/index.comp';
+import { Input } from '@mantine/core';
 
 const Register = ({ changeToLoginPage }: any) => {
-  const onRegisterClick = () => {};
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onRegisterClick = (e: React.MouseEvent) => {
+    console.log('register logs', { name, email, password });
+  };
 
   return (
     <Grid
@@ -19,12 +26,23 @@ const Register = ({ changeToLoginPage }: any) => {
       <Grid.Col style={{ minHeight: rem(80) }} span={6}>
         <Layout>
           <div className="text-3xl">Register</div>
-          <EmailWithSuggestions />
+          <Input.Wrapper id="name" withAsterisk label="Name">
+            <Input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              id="name"
+              placeholder="Your name"
+            />
+          </Input.Wrapper>
+
+          <EmailWithSuggestions setEmail={setEmail} email={email} />
           <br />
-          <PasswordStrength />
-          <Button mt={'sm'}>Register</Button>
+          <PasswordStrength password={password} setPassword={setPassword} />
+          <Button my={'sm'} onClick={onRegisterClick}>
+            Register
+          </Button>
           <p>
-            Already a user?
+            Already a user? &nbsp;
             <span
               style={{ cursor: 'pointer' }}
               onClick={() => changeToLoginPage(true)}
