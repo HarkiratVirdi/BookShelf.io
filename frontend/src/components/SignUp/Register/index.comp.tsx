@@ -10,6 +10,8 @@ import {
   Anchor,
   rem,
 } from '@mantine/core';
+import { useRegisterMutation } from '../../../apis/authApi';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -40,6 +42,28 @@ const useStyles = createStyles((theme) => ({
 
 const Register = ({ changeToLoginPage }: any) => {
   const { classes } = useStyles();
+  const [registerState, setRegisterState] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    keepLoggedIn: false,
+  });
+
+  const [registerApi] = useRegisterMutation();
+
+  const onRegisterClick = () => {
+    const data = registerApi(registerState);
+    console.log('data', data);
+  };
+
+  const changeRegisterState = (event: any) => {
+    setRegisterState((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
@@ -51,27 +75,45 @@ const Register = ({ changeToLoginPage }: any) => {
           placeholder="First Name"
           size="md"
           mt="md"
+          name="firstName"
+          onChange={(e) => changeRegisterState(e)}
         />
         <TextInput
           label="Last Name"
           placeholder="Last Name"
           size="md"
           mt="md"
+          name="lastName"
+          onChange={(e) => changeRegisterState(e)}
         />
         <TextInput
           label="Email address"
           placeholder="hello@gmail.com"
           size="md"
           mt="md"
+          name="email"
+          onChange={(e) => changeRegisterState(e)}
         />
         <PasswordInput
           label="Password"
           placeholder="Your password"
           mt="md"
+          name="password"
+          onChange={(e) => changeRegisterState(e)}
           size="md"
         />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md">
+        <Checkbox
+          onChange={() =>
+            setRegisterState((prev) => ({
+              ...prev,
+              keepLoggedIn: !prev.keepLoggedIn,
+            }))
+          }
+          label="Keep me logged in"
+          mt="xl"
+          size="md"
+        />
+        <Button onClick={onRegisterClick} fullWidth mt="xl" size="md">
           Register
         </Button>
 

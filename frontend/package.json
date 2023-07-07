@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy":"http://localhost:3001",
   "dependencies": {
     "@mantine/carousel": "^6.0.15",
     "@mantine/core": "^6.0.13",
