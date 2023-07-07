@@ -1,15 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { Autocomplete, Loader } from '@mantine/core';
 
-export default function EmailWithSuggestions() {
+interface IEmailWithSuggestion {
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+}
+
+export default function EmailWithSuggestions(props: IEmailWithSuggestion) {
   const timeoutRef = useRef<number>(-1);
-  const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string[]>([]);
 
   const handleChange = (val: string) => {
     window.clearTimeout(timeoutRef.current);
-    setValue(val);
+    props.setEmail(val);
     setData([]);
 
     if (val.trim().length === 0 || val.includes('@')) {
@@ -28,7 +32,7 @@ export default function EmailWithSuggestions() {
   };
   return (
     <Autocomplete
-      value={value}
+      value={props.email}
       data={data}
       onChange={handleChange}
       rightSection={loading ? <Loader size="1rem" /> : null}
