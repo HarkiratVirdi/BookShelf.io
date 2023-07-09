@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const bookController = require('../controllers/bookController');
 
-router.get('/', (req, res) => {
-  res.json('Fetching all products');
-});
+router.post('/books', bookController.create);
 
-router.get('/:id', (req, res) => {
-  res.json('Fetching single product');
-});
+router.get('/books/:category', bookController.byCat);
+
+router.get('/books', bookController.retrieve);
+
+router.get('/books/:id', bookController.byId);
+
+router.put('/books/:id', bookController.update);
 
 module.exports = router;

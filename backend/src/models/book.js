@@ -24,9 +24,10 @@ const bookSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+    required: false,
   },
 });
 
-const Book = mongoose.model('address', bookSchema);
+const Book = mongoose.model('book', bookSchema);
 
 module.exports = Book;
