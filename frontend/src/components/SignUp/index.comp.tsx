@@ -8,12 +8,14 @@ const SignUp = () => {
 
   return (
     <div>
-      {isLoginPage ? (
+      {isLoginPage ? ( 
+
         <Login changeToLoginPage={changeToLoginPage} />
-      ) : (
-        <Register changeToLoginPage={changeToLoginPage} />
-      )}
+       ) : (
+       <Register changeToLoginPage={changeToLoginPage} />
+     )}
     </div>
+
   );
 };
 

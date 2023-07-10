@@ -9,7 +9,7 @@ const Register = ({ changeToLoginPage }: any) => {
 
   return (
     <Grid
-      justify="center"
+      justify="left"
       align="center"
       gutter={5}
       gutterXs="md"
@@ -19,24 +19,24 @@ const Register = ({ changeToLoginPage }: any) => {
       <Grid.Col style={{ minHeight: rem(80) }} span={6}>
         <Layout>
           <div className="text-3xl">Register</div>
-          <EmailWithSuggestions />
+          {/* <EmailWithSuggestions /> */}
           <br />
-          <PasswordStrength />
-          <Button mt={'sm'}>Register</Button>
-          <p
+          {/* <PasswordStrength /> */}
+          {/* <Button mt={'sm'}>Register</Button> */}
+          {/* <p
             style={{ cursor: 'pointer' }}
             onClick={() => changeToLoginPage(false)}
           >
             Already a user? Login Now
-          </p>
+          </p> */}
         </Layout>
       </Grid.Col>
-      <Grid.Col span={6}>
-        <img
+      <Grid.Col span={20}>
+        {/* <img
           src="./signUpCover.jpg"
           style={{ objectFit: 'cover', height: '100vh', width: '100%' }}
           alt=""
-        />
+        /> */}
       </Grid.Col>
     </Grid>
   );
