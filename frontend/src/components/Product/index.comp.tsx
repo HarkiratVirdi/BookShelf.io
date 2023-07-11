@@ -1,56 +1,87 @@
+import { IconHeart } from '@tabler/icons-react';
 import {
   Card,
-  Group,
-  Text,
-  Menu,
-  ActionIcon,
   Image,
-  SimpleGrid,
+  Text,
+  Group,
+  Badge,
+  Button,
+  ActionIcon,
+  createStyles,
   rem,
 } from '@mantine/core';
-import { IconDots, IconEye, IconFileZip, IconTrash } from '@tabler/icons-react';
 import { IBook } from '../../interfaces/Book.interface';
 
-const Product = (props: IBook) => {
-  const { name, price, author, seller, genre, images } = props;
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+  },
+
+  section: {
+    borderBottom: `${rem(1)} solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+  },
+
+  like: {
+    color: theme.colors.red[6],
+  },
+
+  label: {
+    textTransform: 'uppercase',
+    fontSize: theme.fontSizes.xs,
+    fontWeight: 700,
+  },
+}));
+
+const ProductCard = (props: IBook) => {
+  const { classes, theme } = useStyles();
+  const { image, name, author, genre, price, seller } = props;
+
+  const features = genre.map((gen) => (
+    <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={gen}>
+      {gen}
+    </Badge>
+  ));
 
   return (
-    <Card withBorder shadow="sm" radius="md">
-      <Card.Section withBorder inheritPadding py="xs">
-        <Group position="apart">
-          <Text weight={500}>
-            {name} | {author} | {price} | {genre}
-          </Text>
-          <Menu withinPortal position="bottom-end" shadow="sm">
-            <Menu.Target>
-              <ActionIcon>
-                <IconDots size="1rem" />
-              </ActionIcon>
-            </Menu.Target>
+    <Card withBorder radius="md" p="md" className={classes.card}>
+      <Card.Section>
+        <Image src={image} alt={name} height={180} />
+      </Card.Section>
 
-            <Menu.Dropdown>
-              <Menu.Item icon={<IconFileZip size={rem(14)} />}>
-                Add to Cart
-              </Menu.Item>
-              <Menu.Item icon={<IconEye size={rem(14)} />}>Favorites</Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+      <Card.Section className={classes.section} mt="md">
+        <Group position="apart">
+          <Text fz="lg" fw={500}>
+            {name}
+          </Text>
+          <Badge size="sm">{author}</Badge>
         </Group>
       </Card.Section>
 
-      <Card.Section mt="sm">
-        <Image src="https://images.unsplash.com/photo-1579263477001-7a703f1974e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" />
+      <Card.Section className={classes.section}>
+        <Text mt="md" className={classes.label} c="dimmed">
+          Perfect for you, if you enjoy
+        </Text>
+        <Group spacing={7} mt={5}>
+          {features}
+        </Group>
       </Card.Section>
 
-      <Card.Section inheritPadding mt="sm" pb="md">
-        <SimpleGrid cols={2}>
-          {images.map((image) => (
-            <Image src={image} key={image} radius="sm" />
-          ))}
-        </SimpleGrid>
-      </Card.Section>
+      <Group mt="xs">
+        <Button radius="md" style={{ flex: 1 }}>
+          Go the product page
+        </Button>
+        <ActionIcon variant="default" radius="md" size={36}>
+          <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
+        </ActionIcon>
+      </Group>
     </Card>
   );
 };
 
-export default Product;
+export default ProductCard;

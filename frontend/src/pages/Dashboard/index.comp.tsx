@@ -10,8 +10,8 @@ const sampleProduct: IBook = {
   author: 'JK rowling',
   price: '$100',
   seller: 'Unknown',
-  images: ['./SampleImage.png'],
-  genre: 'Horror',
+  image: './SampleImage.png',
+  genre: ['Horror'],
 };
 
 const links = [
