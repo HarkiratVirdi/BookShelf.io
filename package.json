@@ -17,6 +17,7 @@
     "nodemon": "^2.0.22"
   },
   "dependencies": {
+    "@mantine/carousel": "^6.0.16",
     "backend": "^0.0.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1"
