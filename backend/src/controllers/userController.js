@@ -4,6 +4,7 @@ const logger = require('../logger');
 const asyncHandler = require('express-async-handler');
 const { generateToken } = require('../utils/generateToken.js');
 
+
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
