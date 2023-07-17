@@ -1,9 +1,9 @@
 export interface IBook {
-      name: string;
+      title: string;
       author: string;
       image: string;
-      genre: string[];
-      price: string;
-      seller: string;
+      category: string;
+      price: number;
+      description: string;
   }
   
