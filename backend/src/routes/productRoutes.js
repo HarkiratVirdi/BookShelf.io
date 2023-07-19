@@ -9,5 +9,6 @@ router.get('/books/:category', bookController.byCat);
 router.put('/books/:id', bookController.update);
 
 router.get('/books/:author', bookController.byAut);
+router.get('/books/:searchResults', bookController.searchBook);
 
 module.exports = router;

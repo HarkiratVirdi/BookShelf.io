@@ -134,3 +134,24 @@ exports.byAut = async (req, res, next) => {
     next(error);
   }
 };
+
+//search for book
+exports.searchBook = (req, res) => {
+  const search = req.query;
+
+  try {
+    var books = await.Book.find({$regex: search, $options: 'i'});
+    logger.debug('Found books: ' + books);
+
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'ok',
+        books: books,
+      })
+    );
+  } catch (error) {
+    res.status(407).json(createErrorResponse(407, 'Error retrieving books by author'));
+    logger.error({ error, category }, 'Unable to get books by author');
+    next(error);
+  }
+}
