@@ -1,12 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
+const { protect } = require('../middlewares/authUser');
 
-router.post('/books', bookController.create);
+//file uploads
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+router.post('/book', protect, upload.single('image'), bookController.create);
+
 router.get('/books', bookController.retrieve);
+
 router.get('/book/:id', bookController.byId);
-router.get('/books/:category', bookController.byCat);
-router.put('/books/:id', bookController.update);
+
+router.put('/book/:id', protect, bookController.update);
+
 
 router.get('/books/:author', bookController.byAut);
 router.get('/books/:searchResults', bookController.searchBook);
