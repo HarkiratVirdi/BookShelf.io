@@ -8,12 +8,12 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.post('/books', protect, upload.single('image'), bookController.create);
+router.post('/book', protect, upload.single('image'), bookController.create);
 
 router.get('/books', bookController.retrieve);
 
-router.get('/books/:id', bookController.byId);
+router.get('/book/:id', bookController.byId);
 
-router.put('/books/:id', protect, bookController.update);
+router.put('/book/:id', protect, bookController.update);
 
 module.exports = router;
