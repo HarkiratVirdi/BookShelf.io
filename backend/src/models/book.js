@@ -9,12 +9,12 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: String,
+  genre: {
+    type: [{ type: String }],
     required: true,
   },
   price: {
-    type: Number,
+    type: String,
     required: true,
   },
   description: {

@@ -1,21 +1,26 @@
 const Book = require('../models/book');
 const { createSuccessResponse, createErrorResponse } = require('../response.js');
 const logger = require('../logger');
+const { saveImage } = require('../aws');
+const { randomUUID } = require('crypto');
 
 //post
 exports.create = async (req, res) => {
+  const imageId = randomUUID();
   const book = new Book({
     title: req.body.title,
     author: req.body.author,
-    category: req.body.category,
+    genre: req.body.genre,
     price: req.body.price,
     description: req.body.description,
     user: req.user,
+    image: `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/${imageId}`,
   });
-  logger.debug({ book }, 'Saving book: ');
 
   try {
     await book.save();
+    saveImage(imageId, req.file.buffer);
+    logger.debug({ book }, 'Saving book: ');
     res.status(202).json(createSuccessResponse({ message: 'Book is successfully saved' }));
     logger.info({ book }, 'Save book: success');
   } catch (error) {
@@ -29,7 +34,14 @@ exports.create = async (req, res) => {
 //get
 exports.retrieve = async (req, res) => {
   try {
-    const bookList = await Book.find();
+    const { genre, author, title } = req.query;
+    let query = {};
+
+    if (genre) query.genre = genre;
+    if (author) query.author = author;
+    if (title) query.title = title;
+
+    const bookList = await Book.find(query);
     res.status(200).json(
       createSuccessResponse({
         status: 'ok',
@@ -58,26 +70,6 @@ exports.byId = async (req, res, next) => {
   } catch (error) {
     res.status(406).json(createErrorResponse(406, 'Error retrieving a book'));
     logger.error({ error, id }, 'Unable to get book by id');
-    next(error);
-  }
-};
-
-//get by category
-exports.byCat = async (req, res, next) => {
-  const category = req.params.category;
-  try {
-    var books = await Book.find({}).select({ category: category });
-    logger.debug('Found books: ' + books);
-
-    res.status(200).json(
-      createSuccessResponse({
-        status: 'ok',
-        books: books,
-      })
-    );
-  } catch (error) {
-    res.status(407).json(createErrorResponse(407, 'Error retrieving books by category'));
-    logger.error({ error, category }, 'Unable to get books by category');
     next(error);
   }
 };
