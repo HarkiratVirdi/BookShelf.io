@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     genre: req.body.genre,
     price: req.body.price,
     description: req.body.description,
-    user: req.user,
+    user: req.user.id,
     image: `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/${imageId}`,
   });
 
