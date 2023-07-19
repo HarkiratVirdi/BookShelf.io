@@ -10,6 +10,8 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import { useGetBooksQuery } from '../../apis/bookApi';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -70,6 +72,13 @@ const links = [
 const HeaderSearch = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
+  const { data, isLoading, isError } = useGetBooksQuery();
+  const [autoCompleteValue, setAutoCompleteValue] = useState('');
+  const searchData = data?.books?.map((book) => book?.title);
+
+  const onChangeAutoComplete = (e) => {
+    setAutoCompleteValue(e);
+  };
 
   const items = links.map((link) => (
     <a
@@ -98,20 +107,16 @@ const HeaderSearch = () => {
           <Group ml={50} spacing={5} className={classes.links}>
             {items}
           </Group>
-          <Autocomplete
-            className={classes.search}
-            placeholder="Search"
-            icon={<IconSearch size="1rem" stroke={1.5} />}
-            data={[
-              'React',
-              'Angular',
-              'Vue',
-              'Next.js',
-              'Riot.js',
-              'Svelte',
-              'Blitz.js',
-            ]}
-          />
+          {!isLoading && (
+            <Autocomplete
+              className={classes.search}
+              placeholder="Search"
+              icon={<IconSearch size="1rem" stroke={1.5} />}
+              value={autoCompleteValue}
+              onChange={onChangeAutoComplete}
+              data={searchData}
+            />
+          )}
         </Group>
       </div>
     </Header>
