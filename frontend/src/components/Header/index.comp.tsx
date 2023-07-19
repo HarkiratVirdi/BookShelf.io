@@ -9,6 +9,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -86,9 +87,11 @@ const HeaderSearch = () => {
       <div className={classes.inner}>
         <Group>
           <Burger opened={opened} onClick={toggle} size="sm" />
-          <Title color="darkBlue" order={3}>
-            Bookshelf.io
-          </Title>
+          <Link to="/dashboard">
+            <Title color="darkBlue" order={3}>
+              Bookshelf.io
+            </Title>
+          </Link>
         </Group>
 
         <Group>
