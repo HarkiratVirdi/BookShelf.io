@@ -61,7 +61,12 @@ interface HeaderSearchProps {
   links: { link: string; label: string }[];
 }
 
-const HeaderSearch = ({ links }: HeaderSearchProps) => {
+const links = [
+  { label: 'Categories', link: '/categories' },
+  { label: 'Recommended Books', link: '/recommended-books' },
+];
+
+const HeaderSearch = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 

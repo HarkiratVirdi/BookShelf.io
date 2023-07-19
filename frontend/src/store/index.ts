@@ -2,17 +2,20 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import authReducer from './Auth/auth.reducer';
 import { authApi } from '../apis/authApi';
+import { bookApi } from '../apis/bookApi';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const middlewares = [
     sagaMiddleware,
-    authApi.middleware
+    authApi.middleware,
+    bookApi.middleware
 ]
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
+    [bookApi.reducerPath]: bookApi.reducer,
     auth: authReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({

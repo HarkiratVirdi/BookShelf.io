@@ -11,6 +11,7 @@ import {
   rem,
 } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -40,24 +41,23 @@ const useStyles = createStyles((theme) => ({
 
 const ProductCard = (props: IBook) => {
   const { classes, theme } = useStyles();
-  const { image, name, author, genre, price, seller } = props;
-
-  const features = genre.map((gen) => (
-    <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={gen}>
-      {gen}
-    </Badge>
-  ));
+  const { _id, image, title, author, description, category, price } = props;
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
-        <Image src={image} alt={name} height={180} />
+        <Image
+          styles={{ image: { objectFit: 'contain' } }}
+          src={image}
+          alt={title}
+          height={180}
+        />
       </Card.Section>
 
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
           <Text fz="lg" fw={500}>
-            {name}
+            {title}
           </Text>
           <Badge size="sm">{author}</Badge>
         </Group>
@@ -65,17 +65,19 @@ const ProductCard = (props: IBook) => {
 
       <Card.Section className={classes.section}>
         <Text mt="md" className={classes.label} c="dimmed">
-          Perfect for you, if you enjoy
+          {description}
         </Text>
         <Group spacing={7} mt={5}>
-          {features}
+          {category}
         </Group>
       </Card.Section>
 
       <Group mt="xs">
-        <Button radius="md" style={{ flex: 1 }}>
-          Go the product page
-        </Button>
+        <Link to={`/product/${_id}`}>
+          <Button radius="md" style={{ flex: 1 }}>
+            Go the product page
+          </Button>
+        </Link>
         <ActionIcon variant="default" radius="md" size={36}>
           <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
         </ActionIcon>

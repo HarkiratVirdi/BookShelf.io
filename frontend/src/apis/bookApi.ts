@@ -1,18 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseURL } from '../config';
+import { IBook } from '../interfaces/Book.interface';
 
 // Define a service using a base URL and expected endpoints
 export const bookApi = createApi({
   reducerPath: 'bookApi',
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
   endpoints: (builder) => ({
-    getBookById: builder.query({
+    getBookById: builder.query<any, number>({
       query: (id) => `/products/books/${id}`,
     }),
-    getBookByCategory: builder.query({
+    getBookByCategory: builder.query<any, string>({
       query: (category) => `/products/books/${category}`,
     }),
-    getBooks: builder.query({
+    getBooks: builder.query<{status: string, books: IBook[]}, void>({
         query: () => `/products/books`,
     }),
   }),
