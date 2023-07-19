@@ -111,3 +111,23 @@ exports.update = async (req, res, next) => {
     next(error);
   }
 };
+
+//get by author
+exports.byAut = async (req, res, next) => {
+  const author = req.params.author;
+  try {
+    var books = await Book.find({}).select({ author: author });
+    logger.debug('Found books: ' + books);
+
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'ok',
+        books: books,
+      })
+    );
+  } catch (error) {
+    res.status(407).json(createErrorResponse(407, 'Error retrieving books by author'));
+    logger.error({ error, category }, 'Unable to get books by author');
+    next(error);
+  }
+};

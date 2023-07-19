@@ -12,4 +12,6 @@ router.get('/books/:id', bookController.byId);
 
 router.put('/books/:id', bookController.update);
 
+router.get('/books/:author', bookController.byAut);
+
 module.exports = router;
