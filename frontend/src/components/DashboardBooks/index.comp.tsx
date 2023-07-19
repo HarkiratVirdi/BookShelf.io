@@ -5,6 +5,7 @@ import { IBook } from '../../interfaces/Book.interface';
 import { useGetBooksQuery } from '../../apis/bookApi';
 
 const sampleProduct: IBook = {
+  _id: '1',
   title: 'Harry Potter',
   author: 'JK rowling',
   price: 100,

@@ -6,6 +6,7 @@ import HeaderSearch from '../../components/Header/index.comp';
 import DashboardBooks from '../../components/DashboardBooks/index.comp';
 
 const sampleProduct: IBook = {
+  _id: '1',
   title: 'Harry Potter',
   author: 'JK rowling',
   price: 100,
@@ -15,15 +16,10 @@ const sampleProduct: IBook = {
   description: 'Harry potter 2000',
 };
 
-const links = [
-  { label: 'Categories', link: '/categories' },
-  { label: 'Recommended Books', link: '/recommended-books' },
-];
-
 const Dashboard = () => {
   return (
     <>
-      <HeaderSearch links={links} />
+      <HeaderSearch />
       <div className="m-4">
         <BannerCarousel />
       </div>
