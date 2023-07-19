@@ -7,8 +7,8 @@ export const bookApi = createApi({
   reducerPath: 'bookApi',
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
   endpoints: (builder) => ({
-    getBookById: builder.query<any, number>({
-      query: (id) => `/products/books/${id}`,
+    getBookById: builder.query<{status: string, book: IBook}, string>({
+      query: (id) => `/products/book/${id}`,
     }),
     getBookByCategory: builder.query<any, string>({
       query: (category) => `/products/books/${category}`,
