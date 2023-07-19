@@ -6,23 +6,20 @@ import HeaderSearch from '../../components/Header/index.comp';
 import DashboardBooks from '../../components/DashboardBooks/index.comp';
 
 const sampleProduct: IBook = {
-  name: 'Harry Potter',
+  _id: '1',
+  title: 'Harry Potter',
   author: 'JK rowling',
-  price: '$100',
-  seller: 'Unknown',
-  image: './SampleImage.png',
-  genre: ['Horror'],
+  price: 100,
+  image:
+    'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
+  category: 'Horror',
+  description: 'Harry potter 2000',
 };
-
-const links = [
-  { label: 'Categories', link: '/categories' },
-  { label: 'Recommended Books', link: '/recommended-books' },
-];
 
 const Dashboard = () => {
   return (
     <>
-      <HeaderSearch links={links} />
+      <HeaderSearch />
       <div className="m-4">
         <BannerCarousel />
       </div>

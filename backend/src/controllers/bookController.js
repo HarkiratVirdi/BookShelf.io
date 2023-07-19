@@ -58,15 +58,18 @@ exports.retrieve = async (req, res) => {
 exports.byId = async (req, res, next) => {
   const id = req.params.id;
   try {
-    var book = await Book.findById(id);
-    logger.debug('Found book: ' + book);
+    const book = await Book.findById(id);
 
-    res.status(200).json(
-      createSuccessResponse({
-        status: 'ok',
-        book: book,
-      })
-    );
+    if(book)
+    {
+      logger.debug('Found book: ' + book);
+      res.status(200).json(
+        createSuccessResponse({
+          status: 'ok',
+          book: book,
+        })
+        );
+      }
   } catch (error) {
     res.status(406).json(createErrorResponse(406, 'Error retrieving a book'));
     logger.error({ error, id }, 'Unable to get book by id');
