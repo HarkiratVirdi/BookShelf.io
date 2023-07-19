@@ -9,6 +9,9 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
+import { useGetBooksQuery } from '../../apis/bookApi';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -61,9 +64,21 @@ interface HeaderSearchProps {
   links: { link: string; label: string }[];
 }
 
-const HeaderSearch = ({ links }: HeaderSearchProps) => {
+const links = [
+  { label: 'Categories', link: '/categories' },
+  { label: 'Recommended Books', link: '/recommended-books' },
+];
+
+const HeaderSearch = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
+  const { data, isLoading, isError } = useGetBooksQuery();
+  const [autoCompleteValue, setAutoCompleteValue] = useState('');
+  const searchData = data?.books?.map((book) => book?.title);
+
+  const onChangeAutoComplete = (e) => {
+    setAutoCompleteValue(e);
+  };
 
   const items = links.map((link) => (
     <a
@@ -81,29 +96,27 @@ const HeaderSearch = ({ links }: HeaderSearchProps) => {
       <div className={classes.inner}>
         <Group>
           <Burger opened={opened} onClick={toggle} size="sm" />
-          <Title color="darkBlue" order={3}>
-            Bookshelf.io
-          </Title>
+          <Link to="/dashboard">
+            <Title color="darkBlue" order={3}>
+              Bookshelf.io
+            </Title>
+          </Link>
         </Group>
 
         <Group>
           <Group ml={50} spacing={5} className={classes.links}>
             {items}
           </Group>
-          <Autocomplete
-            className={classes.search}
-            placeholder="Search"
-            icon={<IconSearch size="1rem" stroke={1.5} />}
-            data={[
-              'React',
-              'Angular',
-              'Vue',
-              'Next.js',
-              'Riot.js',
-              'Svelte',
-              'Blitz.js',
-            ]}
-          />
+          {!isLoading && (
+            <Autocomplete
+              className={classes.search}
+              placeholder="Search"
+              icon={<IconSearch size="1rem" stroke={1.5} />}
+              value={autoCompleteValue}
+              onChange={onChangeAutoComplete}
+              data={searchData}
+            />
+          )}
         </Group>
       </div>
     </Header>
