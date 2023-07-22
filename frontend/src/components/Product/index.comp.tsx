@@ -41,7 +41,13 @@ const useStyles = createStyles((theme) => ({
 
 const ProductCard = (props: IBook) => {
   const { classes, theme } = useStyles();
-  const { _id, image, title, author, description, category, price } = props;
+  const { _id, image, title, author, description, genre, price } = props;
+
+  const features = genre?.map((gen) => (
+    <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={gen}>
+      {gen}
+    </Badge>
+  ));
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
@@ -67,9 +73,16 @@ const ProductCard = (props: IBook) => {
         <Text mt="md" className={classes.label} c="dimmed">
           {description}
         </Text>
-        <Group spacing={7} mt={5}>
-          {category}
-        </Group>
+        {features?.length > 0 && (
+          <>
+            <Text mt="md" className={classes.label} c="dimmed">
+              Perfect if you like
+            </Text>
+            <Group spacing={7} mt={5}>
+              {features}
+            </Group>
+          </>
+        )}
       </Card.Section>
 
       <Group mt="xs">

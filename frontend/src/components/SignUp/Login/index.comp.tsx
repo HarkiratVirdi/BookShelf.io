@@ -53,9 +53,6 @@ const Login = ({ changeToLoginPage }: any) => {
   const onLoginClick = async () => {
     const data = await loginApi(loginState);
     console.log('data', data);
-
-    if (data.hasOwnProperty(data)) {
-    }
   };
 
   const changeLoginState = (event: any) => {
