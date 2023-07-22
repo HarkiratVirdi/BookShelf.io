@@ -142,8 +142,8 @@ exports.searchBook = (req, res) => {
       })
     );
   } catch (error) {
-    res.status(407).json(createErrorResponse(407, 'Error retrieving books by author'));
-    logger.error({ error, category }, 'Unable to get books by author');
+    res.status(407).json(createErrorResponse(407, 'Error retrieving books by search'));
+    logger.error({ error, category }, 'Unable to get books by search');
     next(error);
   }
 }
