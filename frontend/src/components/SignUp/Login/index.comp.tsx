@@ -10,6 +10,8 @@ import {
   Anchor,
   rem,
 } from '@mantine/core';
+import { useState } from 'react';
+import { useLoginMutation } from '../../../apis/authApi';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -40,6 +42,28 @@ const useStyles = createStyles((theme) => ({
 
 const Login = ({ changeToLoginPage }: any) => {
   const { classes } = useStyles();
+  const [loginState, setLoginState] = useState({
+    email: '',
+    password: '',
+    keepLoggedIn: false,
+  });
+
+  const [loginApi] = useLoginMutation();
+
+  const onLoginClick = async () => {
+    const data = await loginApi(loginState);
+    console.log('data', data);
+
+    if (data.hasOwnProperty(data)) {
+    }
+  };
+
+  const changeLoginState = (event: any) => {
+    setLoginState((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -47,20 +71,35 @@ const Login = ({ changeToLoginPage }: any) => {
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome back to Bookshelf.io!
         </Title>
-
         <TextInput
           label="Email address"
           placeholder="hello@gmail.com"
           size="md"
+          name={'email'}
+          onChange={changeLoginState}
+          value={loginState.email}
         />
         <PasswordInput
           label="Password"
           placeholder="Your password"
           mt="md"
+          onChange={changeLoginState}
+          name={'password'}
+          size="md"
+          value={loginState.password}
+        />
+        <Checkbox
+          label="Keep me logged in"
+          mt="xl"
+          onChange={() =>
+            setLoginState((prev) => ({
+              ...prev,
+              keepLoggedIn: !prev.keepLoggedIn,
+            }))
+          }
           size="md"
         />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md">
+        <Button onClick={onLoginClick} fullWidth mt="xl" size="md">
           Login
         </Button>
 
