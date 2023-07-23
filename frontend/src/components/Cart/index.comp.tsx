@@ -4,6 +4,7 @@ import ProductCard from '../Product/index.comp';
 import { Paper, Text } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 
+
 const sampleProduct: IBook = {
   _id: '1',
   title: 'Harry Potter',
