@@ -1,7 +1,7 @@
 import React from 'react';
 import { Title, Grid } from '@mantine/core';
 import ProductCard from '../Product/index.comp';
-import { Paper } from '@mantine/core';
+import { Paper, Text } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 
 const sampleProduct: IBook = {
@@ -24,7 +24,11 @@ const Cart = () => {
     { sampleProduct },
   ];
 
-  const totalPrice = cartBooks.reduce((acc, item) => acc + item.sampleProduct.price, 0);
+  let totalPrice: number = 0;
+
+  for (const c of cartBooks) {
+    totalPrice += c.sampleProduct.price;
+  }
 
     return (
       <Paper style={{ padding: '20px' }}>
@@ -32,10 +36,13 @@ const Cart = () => {
       {cartBooks.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        <ul>
+        <ul style={{ listStyle: 'none', padding: 5 }}>
           {cartBooks.map((i) => (
-            <li key={i.sampleProduct._id}>
-              <img src={i.sampleProduct.image} alt={i.sampleProduct.title} style={{ width: '50px', marginRight: '10px' }} />{i.sampleProduct.title} by {i.sampleProduct.author} - ${i.sampleProduct.price}
+            <li key={i.sampleProduct._id} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', padding: '20px', alignItems: 'center' }}>
+              <img src={i.sampleProduct.image} alt={i.sampleProduct.title} style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginRight: '10px' }} />
+              <div>
+              <Text weight={700}>{i.sampleProduct.title}</Text> by {i.sampleProduct.author} - ${i.sampleProduct.price}
+              </div>
             </li>
           ))}
         </ul>
