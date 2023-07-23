@@ -1,19 +1,19 @@
 import React from 'react';
 import Product from '../../components/Product/index.comp';
-import CartItems from '../../components/Cart/index.comp';
+import Cart from '../../components/Cart/index.comp';
 
 import HeaderSearch from '../../components/Header/index.comp';
 
-const Cart = () => {
+const CartPage = () => {
     return (
       <>
         <HeaderSearch />
- 
+        <h1>Shopping Cart</h1>
         <div className="mt-12 mx-4">
-          <CartItems />
+          <Cart />
         </div>
       </>
     );
   };
 
-  export default Cart;
+  export default CartPage;
