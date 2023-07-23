@@ -12,11 +12,16 @@ import { IconSearch } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useGetBooksQuery } from '../../apis/bookApi';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { authSlice } from '../../store/Auth/auth.reducer';
+import { authState } from '../../store/Auth/auth.selector';
+import UserAccountIcon from './UserAccountIcon.comp';
 
 const useStyles = createStyles((theme) => ({
   header: {
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
+    overflow: 'hidden',
   },
 
   inner: {
@@ -72,6 +77,7 @@ const HeaderSearch = () => {
   const { classes } = useStyles();
   const { data, isLoading, isError } = useGetBooksQuery();
   const [autoCompleteValue, setAutoCompleteValue] = useState('');
+  const loginSlice = useSelector(authState);
   const searchData = data?.books?.map((book) => book?.title);
 
   const onChangeAutoComplete = (e) => {
@@ -111,7 +117,13 @@ const HeaderSearch = () => {
               data={searchData}
             />
           )}
-          {items(linksLogin)}
+          {!loginSlice.token ? (
+            items(linksLogin)
+          ) : (
+            <div>
+              <UserAccountIcon />
+            </div>
+          )}
         </Group>
       </div>
     </Header>

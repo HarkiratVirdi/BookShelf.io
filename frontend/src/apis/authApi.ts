@@ -12,6 +12,8 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response: any) => response.data.error
     }),
     register: builder.mutation({
       query: (body) => ({
@@ -19,6 +21,8 @@ export const authApi = createApi({
         method: 'POST',
         body,
       }),
+      transformResponse: (response) => response,
+      transformErrorResponse: (response: any) => response.data.error
     }),
   }),
 });
