@@ -12,11 +12,16 @@ import { IconSearch } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useGetBooksQuery } from '../../apis/bookApi';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { authSlice } from '../../store/Auth/auth.reducer';
+import { authState } from '../../store/Auth/auth.selector';
+import UserAccountIcon from './UserAccountIcon.comp';
 
 const useStyles = createStyles((theme) => ({
   header: {
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
+    overflow: 'hidden',
   },
 
   inner: {
@@ -64,32 +69,27 @@ interface HeaderSearchProps {
   links: { link: string; label: string }[];
 }
 
-const links = [
-  { label: 'Categories', link: '/categories' },
-  { label: 'Recommended Books', link: '/recommended-books' },
-];
+const linksCategories = [{ label: 'Categories', link: '/categories' }];
+const linksLogin = [{ label: 'Login', link: '/login' }];
 
 const HeaderSearch = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
   const { data, isLoading, isError } = useGetBooksQuery();
   const [autoCompleteValue, setAutoCompleteValue] = useState('');
+  const loginSlice = useSelector(authState);
   const searchData = data?.books?.map((book) => book?.title);
 
   const onChangeAutoComplete = (e) => {
     setAutoCompleteValue(e);
   };
 
-  const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </a>
-  ));
+  const items = (arrLinks) =>
+    arrLinks.map((link) => (
+      <Link to={link.link} className={classes.link}>
+        {link.label}
+      </Link>
+    ));
 
   return (
     <Header height={56} className={classes.header} mb={12}>
@@ -105,7 +105,7 @@ const HeaderSearch = () => {
 
         <Group>
           <Group ml={50} spacing={5} className={classes.links}>
-            {items}
+            {items(linksCategories)}
           </Group>
           {!isLoading && (
             <Autocomplete
@@ -116,6 +116,13 @@ const HeaderSearch = () => {
               onChange={onChangeAutoComplete}
               data={searchData}
             />
+          )}
+          {!loginSlice.token ? (
+            items(linksLogin)
+          ) : (
+            <div>
+              <UserAccountIcon />
+            </div>
           )}
         </Group>
       </div>
