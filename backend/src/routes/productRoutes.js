@@ -17,4 +17,7 @@ router.get('/book/:id', bookController.byId);
 router.put('/book/:id', protect, bookController.update);
 
 
+router.get('/books/:author', bookController.byAut);
+router.get('/books/:searchResults', bookController.searchBook);
+
 module.exports = router;
