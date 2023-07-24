@@ -15,9 +15,6 @@ const CartPage = () => {
         <div className="mt-12 mx-4">
           <Cart />
         </div>
-        <div className="m-4">
-        <BannerCarousel />
-      </div>
       </>
     );
   };
