@@ -31,10 +31,17 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     deleteCartItems: (state, action) => {
-        
+        const newItems = [...state.items];
+        const productId = action.payload._id;
+
+        const deletedItems = newItems.filter((item) => item._id !== productId);
+        console.log("logs", productId, deletedItems, action.payload)
+        state.items = deletedItems;
     },
     addCartItems: (state, action) => {
+        const newItems = [...state.items, action.payload];
 
+        state.items = newItems;
     },
     changeCartQuantity: (state, action) => {
         const productId = action.payload._id;

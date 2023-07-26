@@ -14,9 +14,7 @@ import {
 import { cartState } from '../../store/Cart/cart.selector';
 
 const Cart = () => {
-  const cartStore = useSelector(cartState);
-
-  const cartBooks = cartStore.items;
+  const { items: cartBooks } = useSelector(cartState);
 
   let totalPrice: number = 0;
 
@@ -36,10 +34,10 @@ const Cart = () => {
         ) : (
           <ul style={{ listStyle: 'none', padding: 5 }}>
             {cartBooks.map((product, index) => (
-              <>
+              <div key={product._id}>
                 <CartProduct product={product} index={index} />
                 <Divider />
-              </>
+              </div>
             ))}
           </ul>
         )}

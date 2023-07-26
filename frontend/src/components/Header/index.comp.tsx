@@ -96,7 +96,7 @@ const HeaderSearch = () => {
       <div className={classes.inner}>
         <Group>
           <Burger opened={opened} onClick={toggle} size="sm" />
-          <Link to="/dashboard">
+          <Link to="/">
             <Title color="darkBlue" order={3}>
               Bookshelf.io
             </Title>
