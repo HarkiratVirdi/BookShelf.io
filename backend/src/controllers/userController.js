@@ -51,3 +51,25 @@ exports.register = asyncHandler(async (req, res) => {
     });
   }
 });
+
+exports.getUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    var currentUser = await User.findById(userId);
+    logger.debug('User found: ' + userId);
+
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'Found user',
+        id: currentUser._id,
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+      })
+    );
+  } catch (error) {
+    logger.error({ error, id }, 'Unable to retrieve user info');
+    res.status(406).json(createErrorResponse(406, 'Error retrieving a user'));
+    next(error);
+  }
+};

@@ -68,7 +68,7 @@ exports.byId = async (req, res, next) => {
 
     res.status(200).json(
       createSuccessResponse({
-        status: 'Found book: ',
+        status: 'Found book',
         book: book,
       })
     );
@@ -91,7 +91,7 @@ exports.update = async (req, res, next) => {
       logger.debug('Book with this id is not found: ' + id);
       res.status(404).json(createErrorResponse({ status: 'Book is not found' }));
     } else {
-      logger.debug('Found book: ' + foundBook);
+      logger.debug('Found book' + foundBook);
       const currentUser = req.user.id;
       const bookOwner = foundBook.user;
       if (currentUser != bookOwner) {
@@ -109,7 +109,7 @@ exports.update = async (req, res, next) => {
         };
         const updatedBook = await Book.findOneAndUpdate({ _id: id }, updateFields);
         logger.info(`Book with id ${id} was successfully updated`);
-        res.status(200).json(createSuccessResponse({ status: 'Book updated: ', id: id }));
+        res.status(200).json(createSuccessResponse({ status: 'Book updated', id: id }));
       }
     }
   } catch (error) {
