@@ -16,6 +16,7 @@ router.get('/book/:id', bookController.byId);
 
 router.put('/book/:id', protect, bookController.update);
 
+router.delete('/book/:id', protect, bookController.delete);
 
 router.get('/books/:author', bookController.byAut);
 router.get('/books/:searchResults', bookController.searchBook);

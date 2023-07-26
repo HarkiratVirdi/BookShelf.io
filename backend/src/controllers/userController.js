@@ -49,3 +49,56 @@ exports.register = asyncHandler(async (req, res) => {
     }));
   }
 });
+
+exports.getUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    var currentUser = await User.findById(userId);
+    logger.debug('User found: ' + userId);
+
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'Found user',
+        id: currentUser._id,
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+      })
+    );
+  } catch (error) {
+    logger.error({ error, userId }, 'Unable to retrieve user info');
+    res.status(406).json(createErrorResponse(406, 'Error retrieving a user'));
+    next(error);
+  }
+};
+
+//update user info
+exports.updateUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    const updateFields = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+    };
+    await User.findOneAndUpdate({ _id: userId }, updateFields);
+    logger.info(`User info for user ${userId} was successfully updated`);
+    res.status(200).json(createSuccessResponse({ status: 'User info updated', id: userId }));
+  } catch (error) {
+    logger.error({ error, userId }, 'ERROR. User info is not updated.');
+    next(error);
+  }
+};
+
+//delete user
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    await User.findByIdAndDelete(userId);
+    logger.info(`User  ${userId} was successfully deleted`);
+    res.status(200).json(createSuccessResponse({ status: 'User deleted: ', id: userId }));
+  } catch (error) {
+    logger.error({ error, userId }, 'ERROR. User is not deleted');
+    next(error);
+  }
+};

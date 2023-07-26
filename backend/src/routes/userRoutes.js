@@ -1,17 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const addressController = require('../controllers/addressController');
+const { protect } = require('../middlewares/authUser');
 
 router.post('/register', userController.register);
 
 router.post('/login', userController.login);
 
-router.get('/', (req, res) => {
-  res.json('Fetching single user');
-});
+router.get('/user', protect, userController.getUser);
 
-router.get('/:id', (req, res) => {
-  res.json('Fetching all users');
-});
+router.put('/user', protect, userController.updateUser);
+
+router.delete('/user', protect, userController.deleteUser);
+
+router.post('/user/address', protect, addressController.addAddress);
+
+router.get('/user/address', protect, addressController.getAddress);
+
+router.put('/user/address', protect, addressController.updateAddress);
+
+router.delete('/user/address', protect, addressController.deleteAddress);
 
 module.exports = router;
