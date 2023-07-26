@@ -16,5 +16,6 @@ router.get('/book/:id', bookController.byId);
 
 router.put('/book/:id', protect, bookController.update);
 
+router.delete('/book/:id', protect, bookController.delete);
 
 module.exports = router;
