@@ -68,7 +68,7 @@ exports.getUser = async (req, res, next) => {
       })
     );
   } catch (error) {
-    logger.error({ error, id }, 'Unable to retrieve user info');
+    logger.error({ error, userId }, 'Unable to retrieve user info');
     res.status(406).json(createErrorResponse(406, 'Error retrieving a user'));
     next(error);
   }
@@ -87,7 +87,7 @@ exports.updateUser = async (req, res, next) => {
     logger.info(`User info for user ${userId} was successfully updated`);
     res.status(200).json(createSuccessResponse({ status: 'User info updated', id: userId }));
   } catch (error) {
-    logger.error({ error, id }, 'ERROR. User info is not updated.');
+    logger.error({ error, userId }, 'ERROR. User info is not updated.');
     next(error);
   }
 };
@@ -100,7 +100,7 @@ exports.deleteUser = async (req, res, next) => {
     logger.info(`User  ${userId} was successfully deleted`);
     res.status(200).json(createSuccessResponse({ status: 'User deleted: ', id: userId }));
   } catch (error) {
-    logger.error({ error, ownerId, id }, 'ERROR. User is not deleted');
+    logger.error({ error, userId }, 'ERROR. User is not deleted');
     next(error);
   }
 };

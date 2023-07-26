@@ -14,6 +14,12 @@ router.put('/user', protect, userController.updateUser);
 
 router.delete('/user', protect, userController.deleteUser);
 
-router.post('/address', protect, addressController.addAddress);
+router.post('/user/address', protect, addressController.addAddress);
+
+router.get('/user/address', protect, addressController.getAddress);
+
+router.put('/user/address', protect, addressController.updateAddress);
+
+router.delete('/user/address', protect, addressController.deleteAddress);
 
 module.exports = router;

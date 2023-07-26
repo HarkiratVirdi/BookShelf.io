@@ -29,7 +29,8 @@ const userSchema = mongoose.Schema(
     },
     addressId: {
       type: String,
-      required: false,
+      required: true,
+      default: '000',
     },
   },
   { timestamps: true }
