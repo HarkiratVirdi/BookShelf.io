@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { authSlice } from '../../store/Auth/auth.reducer';
 import { authState } from '../../store/Auth/auth.selector';
 import UserAccountIcon from './UserAccountIcon.comp';
+import { BsCart2 } from 'react-icons/bs';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -124,6 +125,9 @@ const HeaderSearch = () => {
               <UserAccountIcon />
             </div>
           )}
+          <Link to="/cart">
+            <BsCart2 size={'20px'} />
+          </Link>
         </Group>
       </div>
     </Header>

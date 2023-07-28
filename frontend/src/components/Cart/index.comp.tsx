@@ -15,11 +15,11 @@ import { cartState } from '../../store/Cart/cart.selector';
 
 const Cart = () => {
   const { items: cartBooks } = useSelector(cartState);
-
   let totalPrice: number = 0;
 
   if (cartBooks.length > 0) {
     for (const c of cartBooks) {
+      totalPrice += c.price;
     }
   }
 
@@ -50,7 +50,7 @@ const Cart = () => {
         >
           <div>
             <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
-            {totalPrice.toFixed(2)}
+            {totalPrice}
           </div>
           <Button mt={'md'} size="lg">
             Checkout
@@ -62,10 +62,11 @@ const Cart = () => {
 };
 
 const CartProduct = ({ product, index }) => {
-  const cartStore = useSelector(cartState);
   const itemQuantity = useRef(null);
   const dispatch = useDispatch();
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(
+    product?.quantity ? product?.quantity : 1
+  );
 
   useEffect(() => {
     const productWithQuantity = {

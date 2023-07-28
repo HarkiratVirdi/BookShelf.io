@@ -11,6 +11,7 @@ const BookCategories = () => {
     const groupCategories = {
       fantasy: [],
       horror: [],
+      sciFi: [],
     };
 
     data?.books?.forEach((e) => {
@@ -24,7 +25,6 @@ const BookCategories = () => {
     });
 
     setGroupBooks(groupCategories);
-    console.log('group cate', groupCategories);
   }, []);
 
   if (isLoading) return <div>Loading</div>;

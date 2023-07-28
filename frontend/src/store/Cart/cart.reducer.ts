@@ -35,7 +35,6 @@ export const cartSlice = createSlice({
         const productId = action.payload._id;
 
         const deletedItems = newItems.filter((item) => item._id !== productId);
-        console.log("logs", productId, deletedItems, action.payload)
         state.items = deletedItems;
     },
     addCartItems: (state, action) => {
