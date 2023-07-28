@@ -1,6 +1,4 @@
 import React from "react";
-import { Title, Grid } from "@mantine/core";
-import ProductCard from "../Product/index.comp";
 import { Card, Text, Button } from "@mantine/core";
 import { IBook } from "../../interfaces/Book.interface";
 
@@ -32,6 +30,7 @@ const Cart = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        
       }}
     >
       <Card shadow="md" style={{ padding: "20px", width: "800px" }}>
