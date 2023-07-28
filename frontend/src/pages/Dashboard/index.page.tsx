@@ -4,7 +4,16 @@ import { IBook } from '../../interfaces/Book.interface';
 import BannerCarousel from '../../components/BannerCarousel/index.comp';
 import HeaderSearch from '../../components/Header/index.comp';
 import DashboardBooks from '../../components/DashboardBooks/index.comp';
-import { Container, Grid, SimpleGrid, Skeleton, useMantineTheme, rem } from '@mantine/core';
+import {
+  Container,
+  Grid,
+  SimpleGrid,
+  Skeleton,
+  useMantineTheme,
+  rem,
+} from '@mantine/core';
+import FooterLinks from '../../components/Footer/index.comp';
+import { title } from 'process';
 
 const sampleProduct: IBook = {
   _id: '1',
@@ -29,7 +38,35 @@ const Dashboard = () => {
       <div className="mt-12 mx-4">
         <DashboardBooks />
       </div>
-      {/* <Product {...sampleProduct} /> */}
+      <FooterLinks
+        data={[
+          {
+            title: 'Bookshelf.io',
+            links: [
+              {
+                link: '#',
+                label: 'Contact',
+              },
+              {
+                link: '#',
+                label: 'Privacy',
+              },
+              {
+                link: '#',
+                label: 'Blog',
+              },
+              {
+                link: '#',
+                label: 'Store',
+              },
+              {
+                link: '#',
+                label: 'Careers',
+              },
+            ],
+          },
+        ]}
+      />
     </>
   );
 };

@@ -52,7 +52,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Counter = React.forwardRef(
-  ({ min = 1, max = 10, setCounter, counter }: any, ref: any) => {
+  ({ min = 1, max = 10, setCounter, counter = 1 }: any, ref: any) => {
     const { classes } = useStyles();
     const handlers = useRef<NumberInputHandlers>(null);
 
