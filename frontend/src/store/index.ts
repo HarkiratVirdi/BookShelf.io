@@ -4,6 +4,7 @@ import authReducer from './Auth/auth.reducer';
 import { authApi } from '../apis/authApi';
 import { bookApi } from '../apis/bookApi';
 import searchReducer from './Search/search.reducer';
+import cartReducer from './Cart/cart.reducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,7 +19,8 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
     auth: authReducer,
-    search: searchReducer
+    search: searchReducer,
+    cart: cartReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({
     serializableCheck: false

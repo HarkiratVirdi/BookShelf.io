@@ -7,6 +7,7 @@ import {
   rem,
 } from '@mantine/core';
 import { IconPlus, IconMinus } from '@tabler/icons-react';
+import React from 'react';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -50,51 +51,48 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface QuantityInputProps {
-  min?: number;
-  max?: number;
-}
+const Counter = React.forwardRef(
+  ({ min = 1, max = 10, setCounter, counter = 1 }: any, ref: any) => {
+    const { classes } = useStyles();
+    const handlers = useRef<NumberInputHandlers>(null);
 
-const Counter = ({ min = 1, max = 10 }: QuantityInputProps) => {
-  const { classes } = useStyles();
-  const handlers = useRef<NumberInputHandlers>(null);
-  const [value, setValue] = useState<number | ''>(1);
+    return (
+      <div className={classes.wrapper}>
+        <ActionIcon<'button'>
+          size={28}
+          variant="transparent"
+          onClick={() => handlers.current?.decrement()}
+          disabled={counter === min}
+          className={classes.control}
+          onMouseDown={(event) => event.preventDefault()}
+        >
+          <IconMinus size="1rem" stroke={1.5} />
+        </ActionIcon>
 
-  return (
-    <div className={classes.wrapper}>
-      <ActionIcon<'button'>
-        size={28}
-        variant="transparent"
-        onClick={() => handlers.current?.decrement()}
-        disabled={value === min}
-        className={classes.control}
-        onMouseDown={(event) => event.preventDefault()}
-      >
-        <IconMinus size="1rem" stroke={1.5} />
-      </ActionIcon>
+        <NumberInput
+          variant="unstyled"
+          min={min}
+          max={max}
+          handlersRef={handlers}
+          value={counter}
+          ref={ref}
+          onChange={setCounter}
+          classNames={{ input: classes.input }}
+        />
 
-      <NumberInput
-        variant="unstyled"
-        min={min}
-        max={max}
-        handlersRef={handlers}
-        value={value}
-        onChange={setValue}
-        classNames={{ input: classes.input }}
-      />
-
-      <ActionIcon<'button'>
-        size={28}
-        variant="transparent"
-        onClick={() => handlers.current?.increment()}
-        disabled={value === max}
-        className={classes.control}
-        onMouseDown={(event) => event.preventDefault()}
-      >
-        <IconPlus size="1rem" stroke={1.5} />
-      </ActionIcon>
-    </div>
-  );
-};
+        <ActionIcon<'button'>
+          size={28}
+          variant="transparent"
+          onClick={() => handlers.current?.increment()}
+          disabled={counter === max}
+          className={classes.control}
+          onMouseDown={(event) => event.preventDefault()}
+        >
+          <IconPlus size="1rem" stroke={1.5} />
+        </ActionIcon>
+      </div>
+    );
+  }
+);
 
 export default Counter;

@@ -4,7 +4,8 @@ import { IBook } from '../../interfaces/Book.interface';
 import BannerCarousel from '../../components/BannerCarousel/index.comp';
 import HeaderSearch from '../../components/Header/index.comp';
 import DashboardBooks from '../../components/DashboardBooks/index.comp';
-
+import { Container, Grid, SimpleGrid, Skeleton, useMantineTheme, rem } from '@mantine/core';
+import FooterLinks from '../../components/Footer/index.comp';
 
 const sampleProduct: IBook = {
   _id: '1',
@@ -13,7 +14,8 @@ const sampleProduct: IBook = {
   price: 100,
   image:
     'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-  category: 'Horror',
+  genre: ['Horror'],
+  user: '',
   description: 'Harry potter 2000',
 };
 
@@ -28,7 +30,35 @@ const Dashboard = () => {
       <div className="mt-12 mx-4">
         <DashboardBooks />
       </div>
-      {/* <Product {...sampleProduct} /> */}
+      <FooterLinks
+        data={[
+          {
+            title: 'Bookshelf.io',
+            links: [
+              {
+                link: '#',
+                label: 'Contact',
+              },
+              {
+                link: '#',
+                label: 'Privacy',
+              },
+              {
+                link: '#',
+                label: 'Blog',
+              },
+              {
+                link: '#',
+                label: 'Store',
+              },
+              {
+                link: '#',
+                label: 'Careers',
+              },
+            ],
+          },
+        ]}
+      />
     </>
   );
 };

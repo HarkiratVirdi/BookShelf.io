@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   errorMsg: '',
-  name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
   token: '',
@@ -17,9 +18,11 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     storeUserInfo: (state, action) => {
+      console.log("state", state, action);
       state.isLoading = false;
       state.email = action?.payload?.email;
-      state.name = action?.payload?.name;
+      state.firstName = action?.payload?.firstName;
+      state.lastName = action?.payload?.lastName;
       state.token = action?.payload?.token;
     },
     onDataFailure: (state, action) => {

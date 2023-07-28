@@ -9,7 +9,21 @@ import {
   Text,
   Anchor,
   rem,
+  Loader,
+  LoadingOverlay,
 } from '@mantine/core';
+import { useState } from 'react';
+import { useLoginMutation } from '../../../apis/authApi';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import {
+  authSlice,
+  fetchInit,
+  onDataFailure,
+  storeUserInfo,
+} from '../../../store/Auth/auth.reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { authState } from '../../../store/Auth/auth.selector';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -40,27 +54,100 @@ const useStyles = createStyles((theme) => ({
 
 const Login = ({ changeToLoginPage }: any) => {
   const { classes } = useStyles();
+  const [loginState, setLoginState] = useState({
+    email: '',
+    password: '',
+    keepLoggedIn: false,
+    error: {
+      email: '',
+      password: '',
+      login: '',
+    },
+  });
+  const navigate = useNavigate();
+  const [loginApi] = useLoginMutation();
+  const [cookies, setCookie, removeCookie] = useCookies(['userInfo']);
+  const loginSlice = useSelector(authState);
+  const dispatch = useDispatch();
+
+  const setErrorMsg = (msg) => {
+    setLoginState((prev) => ({
+      ...prev,
+      error: { ...prev.error, login: msg },
+    }));
+  };
+
+  const onLoginClick = async () => {
+    dispatch(fetchInit());
+    try {
+      const { error, data }: any = await loginApi(loginState);
+      console.log('data', data);
+
+      if (error) {
+        setErrorMsg(error.message);
+        return;
+      }
+
+      if (data.status === 'ok') {
+        //store in cookies
+        console.log('logged in');
+        dispatch(storeUserInfo(data));
+        setCookie('userInfo', data);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log('error', err);
+      dispatch(onDataFailure(err));
+    }
+  };
+
+  const changeLoginState = (event: any) => {
+    setLoginState((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   return (
     <div className={classes.wrapper}>
-      <Paper className={classes.form} radius={0} p={30}>
+      <Paper pos={'relative'} className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome back to Bookshelf.io!
         </Title>
-
         <TextInput
           label="Email address"
           placeholder="hello@gmail.com"
           size="md"
+          name={'email'}
+          onChange={changeLoginState}
+          value={loginState.email}
         />
         <PasswordInput
           label="Password"
           placeholder="Your password"
           mt="md"
+          onChange={changeLoginState}
+          name={'password'}
+          size="md"
+          value={loginState.password}
+        />
+
+        <Text mt={'sm'} color="red">
+          {loginState.error.login}
+        </Text>
+
+        <Checkbox
+          label="Keep me logged in"
+          mt="xl"
+          onChange={() =>
+            setLoginState((prev) => ({
+              ...prev,
+              keepLoggedIn: !prev.keepLoggedIn,
+            }))
+          }
           size="md"
         />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md">
+        <Button onClick={onLoginClick} fullWidth mt="xl" size="md">
           Login
         </Button>
 

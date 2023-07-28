@@ -9,18 +9,17 @@ exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
+  
   if (user && (await user.comparePassword(password))) {
-    res.json({
+    res.status(200).json(createSuccessResponse({
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       token: generateToken(user._id),
-    });
+    }));
   } else {
-    res.status(401);
-    throw new Error('Invalid email or password');
+    res.status(401).json(createErrorResponse(401, 'Invalid email or password'));
   }
 });
 
@@ -30,8 +29,7 @@ exports.register = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error('User already Exists');
+    res.status(400).json(createErrorResponse(400, 'User already exists. Please Login'));
   }
 
   const user = await User.create({
@@ -42,12 +40,65 @@ exports.register = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201).json({
+    res.status(201).json(createSuccessResponse({
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       token: generateToken(user._id),
-    });
+    }));
   }
 });
+
+exports.getUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    var currentUser = await User.findById(userId);
+    logger.debug('User found: ' + userId);
+
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'Found user',
+        id: currentUser._id,
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+      })
+    );
+  } catch (error) {
+    logger.error({ error, userId }, 'Unable to retrieve user info');
+    res.status(406).json(createErrorResponse(406, 'Error retrieving a user'));
+    next(error);
+  }
+};
+
+//update user info
+exports.updateUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    const updateFields = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+    };
+    await User.findOneAndUpdate({ _id: userId }, updateFields);
+    logger.info(`User info for user ${userId} was successfully updated`);
+    res.status(200).json(createSuccessResponse({ status: 'User info updated', id: userId }));
+  } catch (error) {
+    logger.error({ error, userId }, 'ERROR. User info is not updated.');
+    next(error);
+  }
+};
+
+//delete user
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    await User.findByIdAndDelete(userId);
+    logger.info(`User  ${userId} was successfully deleted`);
+    res.status(200).json(createSuccessResponse({ status: 'User deleted: ', id: userId }));
+  } catch (error) {
+    logger.error({ error, userId }, 'ERROR. User is not deleted');
+    next(error);
+  }
+};

@@ -121,7 +121,7 @@ interface FooterLinksProps {
   }[];
 }
 
-export function FooterLinks({ data }: FooterLinksProps) {
+const FooterLinks = ({ data }: FooterLinksProps) => {
   const { classes } = useStyles();
 
   const groups = data.map((group) => {
@@ -150,14 +150,14 @@ export function FooterLinks({ data }: FooterLinksProps) {
       <Container className={classes.inner}>
         <div className={classes.logo}>
           <Text size="xs" color="dimmed" className={classes.description}>
-            Build fully functional accessible web applications faster than ever
+            Explore Thousands of Books
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
         <Text color="dimmed" size="sm">
-          © 2020 mantine.dev. All rights reserved.
+          © 2023 Bookshelf.io All rights reserved.
         </Text>
 
         <Group spacing={0} className={classes.social} position="right" noWrap>
@@ -174,4 +174,6 @@ export function FooterLinks({ data }: FooterLinksProps) {
       </Container>
     </footer>
   );
-}
+};
+
+export default FooterLinks;
