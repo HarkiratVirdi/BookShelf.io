@@ -12,7 +12,7 @@ import {
   Loader,
   LoadingOverlay,
 } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoginMutation } from '../../../apis/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -24,6 +24,11 @@ import {
 } from '../../../store/Auth/auth.reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { authState } from '../../../store/Auth/auth.selector';
+import {
+  ILoginState,
+  getAccountDetailsFromLocal,
+  saveAccountDetailsInLocal,
+} from '../../../utils';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -54,7 +59,7 @@ const useStyles = createStyles((theme) => ({
 
 const Login = ({ changeToLoginPage }: any) => {
   const { classes } = useStyles();
-  const [loginState, setLoginState] = useState({
+  const [loginState, setLoginState] = useState<any>({
     email: '',
     password: '',
     keepLoggedIn: false,
@@ -69,6 +74,19 @@ const Login = ({ changeToLoginPage }: any) => {
   const [cookies, setCookie, removeCookie] = useCookies(['userInfo']);
   const loginSlice = useSelector(authState);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getDetails = getAccountDetailsFromLocal();
+    if (getDetails !== null) {
+      console.log('get details', getDetails);
+      setLoginState((prev) => ({
+        ...prev,
+        email: getDetails.email,
+        password: getDetails.password,
+        keepLoggedIn: getDetails.keepLoggedIn,
+      }));
+    }
+  }, []);
 
   const setErrorMsg = (msg) => {
     setLoginState((prev) => ({
@@ -137,14 +155,23 @@ const Login = ({ changeToLoginPage }: any) => {
         </Text>
 
         <Checkbox
-          label="Keep me logged in"
+          label="Remember me"
           mt="xl"
-          onChange={() =>
+          onChange={(e) => {
             setLoginState((prev) => ({
               ...prev,
               keepLoggedIn: !prev.keepLoggedIn,
-            }))
-          }
+            }));
+
+            const obj = {
+              email: loginState.email,
+              password: loginState.password,
+              keepLoggedIn: Boolean(e.target.checked),
+            };
+
+            saveAccountDetailsInLocal(obj);
+          }}
+          checked={loginState.keepLoggedIn}
           size="md"
         />
         <Button onClick={onLoginClick} fullWidth mt="xl" size="md">
