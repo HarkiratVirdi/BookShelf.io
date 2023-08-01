@@ -1,28 +1,30 @@
 import {
   createStyles,
   Header,
-  Autocomplete,
   Group,
   Burger,
   rem,
   Title,
+  Autocomplete,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGetBooksQuery } from '../../apis/bookApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { authSlice } from '../../store/Auth/auth.reducer';
 import { authState } from '../../store/Auth/auth.selector';
 import UserAccountIcon from './UserAccountIcon.comp';
 import { BsCart2 } from 'react-icons/bs';
+import { IBook } from '../../interfaces/Book.interface';
+import SelectSearch from 'react-select-search';
+import './search.css';
 
 const useStyles = createStyles((theme) => ({
   header: {
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
-    overflow: 'hidden',
   },
 
   inner: {
@@ -79,10 +81,26 @@ const HeaderSearch = () => {
   const { data, isLoading, isError } = useGetBooksQuery();
   const [autoCompleteValue, setAutoCompleteValue] = useState('');
   const loginSlice = useSelector(authState);
-  const searchData = data?.books?.map((book) => book?.title);
+  const options = data?.books?.map((book: IBook) => {
+    return { value: book._id, name: book.title };
+  });
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    setAutoCompleteValue(options?.[0]?.name);
+  }, []);
+
+  // const options = [
+  //   { value: 'chocolate', label: 'Chocolate' },
+  //   { value: 'strawberry', label: 'Strawberry' },
+  //   { value: 'vanilla', label: 'Vanilla' },
+  // ];
   const onChangeAutoComplete = (e) => {
     setAutoCompleteValue(e);
+
+    setTimeout(() => {
+      navigate(`/product/${e}`);
+    }, 200);
   };
 
   const items = (arrLinks) =>
@@ -109,13 +127,12 @@ const HeaderSearch = () => {
             {items(linksCategories)}
           </Group>
           {!isLoading && (
-            <Autocomplete
-              className={classes.search}
-              placeholder="Search"
-              icon={<IconSearch size="1rem" stroke={1.5} />}
+            <SelectSearch
+              search
+              options={options}
+              onChange={(e) => onChangeAutoComplete(e)}
+              closeOnSelect={true}
               value={autoCompleteValue}
-              onChange={onChangeAutoComplete}
-              data={searchData}
             />
           )}
           {!loginSlice.token ? (
