@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Title, Grid } from '@mantine/core';
-import ProductCard from '../Product/index.comp';
-import { Card, Text, Button, Divider } from '@mantine/core';
-import { IBook } from '../../interfaces/Book.interface';
-import Layout from '../Layout/index.comp';
-import Counter from '../Counter/index.comp';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from "react";
+import { Title, Grid } from "@mantine/core";
+import ProductCard from "../Product/index.comp";
+import { Card, Text, Button, Divider } from "@mantine/core";
+import { IBook } from "../../interfaces/Book.interface";
+import Layout from "../Layout/index.comp";
+import Counter from "../Counter/index.comp";
+import { useDispatch, useSelector } from "react-redux";
 import {
   cartSlice,
   changeCartQuantity,
   deleteCartItems,
-} from '../../store/Cart/cart.reducer';
-import { cartState } from '../../store/Cart/cart.selector';
+} from "../../store/Cart/cart.reducer";
+import { cartState } from "../../store/Cart/cart.selector";
 
 const Cart = () => {
   const { items: cartBooks } = useSelector(cartState);
@@ -32,7 +32,7 @@ const Cart = () => {
         {cartBooks.length === 0 ? (
           <Text weight={700}>Cart is currently empty</Text>
         ) : (
-          <ul style={{ listStyle: 'none', padding: 5 }}>
+          <ul style={{ listStyle: "none", padding: 5 }}>
             {cartBooks.map((product, index) => (
               <div key={product._id}>
                 <CartProduct product={product} index={index} />
@@ -43,18 +43,25 @@ const Cart = () => {
         )}
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '20px',
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "20px",
           }}
         >
           <div>
             <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
             {totalPrice}
           </div>
-          <Button mt={'md'} size="lg">
-            Checkout
-          </Button>
+
+          {cartBooks.length === 0 ? (
+            <Button disabled mt={"md"} size="lg">
+              Checkout
+            </Button>
+          ) : (
+            <Button mt={"md"} size="lg">
+              Checkout
+            </Button>
+          )}
         </div>
       </div>
     </Layout>
@@ -85,16 +92,16 @@ const CartProduct = ({ product, index }) => {
     <li
       key={product._id}
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto 1fr auto',
-        padding: '20px',
-        alignItems: 'center',
+        display: "grid",
+        gridTemplateColumns: "auto 1fr auto",
+        padding: "20px",
+        alignItems: "center",
       }}
     >
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Text weight={700}>{index + 1}</Text>
@@ -102,12 +109,12 @@ const CartProduct = ({ product, index }) => {
           src={product.image}
           alt={product.title}
           style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '10%',
-            objectFit: 'cover',
-            marginRight: '10px',
-            marginLeft: '10px',
+            width: "100px",
+            height: "100px",
+            borderRadius: "10%",
+            objectFit: "cover",
+            marginRight: "10px",
+            marginLeft: "10px",
           }}
         />
       </div>
@@ -124,7 +131,7 @@ const CartProduct = ({ product, index }) => {
             ref={itemQuantity}
           />
         </div>
-        <Button onClick={() => removeCartItem(product)} ml={'sm'} color="red">
+        <Button onClick={() => removeCartItem(product)} ml={"sm"} color="red">
           Remove
         </Button>
       </div>
