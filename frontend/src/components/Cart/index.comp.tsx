@@ -12,6 +12,7 @@ import {
   deleteCartItems,
 } from "../../store/Cart/cart.reducer";
 import { cartState } from "../../store/Cart/cart.selector";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const { items: cartBooks } = useSelector(cartState);
@@ -58,9 +59,11 @@ const Cart = () => {
               Checkout
             </Button>
           ) : (
-            <Button mt={"md"} size="lg">
-              Checkout
-            </Button>
+            <Link to="/checkout">
+              <Button mt={"md"} size="lg">
+                Checkout
+              </Button>
+            </Link>
           )}
         </div>
       </div>
@@ -131,6 +134,7 @@ const CartProduct = ({ product, index }) => {
             ref={itemQuantity}
           />
         </div>
+
         <Button onClick={() => removeCartItem(product)} ml={"sm"} color="red">
           Remove
         </Button>

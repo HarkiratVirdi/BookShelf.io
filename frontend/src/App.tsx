@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard/index.page';
 import Product from './pages/Product/index.page';
 import Cart from './pages/Cart/index.page';
 import BookCategories from './pages/BookCategories/index.page';
-import Checkout from './components/Checkout/index.comp';
+import Checkout from './pages/Checkout/index.page'
 
 
 function App() {
