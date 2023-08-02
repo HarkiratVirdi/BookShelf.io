@@ -25,4 +25,6 @@ router.delete('/user/address', protect, addressController.deleteAddress);
 
 router.post('/user/order', protect, orderController.createOrder);
 
+router.get('/user/orders', protect, orderController.getOrders);
+
 module.exports = router;

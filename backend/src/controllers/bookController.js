@@ -168,7 +168,7 @@ exports.searchBook = (req, res) => {
   const search = req.query;
 
   try {
-    var books = await.Book.find({$regex: search, $options: 'i'});
+    var books = await.Book.find({ $regex: search, $options: 'i' });
     logger.debug('Found books: ' + books);
 
     res.status(200).json(
@@ -182,4 +182,4 @@ exports.searchBook = (req, res) => {
     logger.error({ error, category }, 'Unable to get books by search');
     next(error);
   }
-}
+};
