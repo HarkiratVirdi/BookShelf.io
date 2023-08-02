@@ -21,4 +21,21 @@ const getAccountDetailsFromLocal = (): ILoginState | null => {
   return null;
 };
 
-export { saveAccountDetailsInLocal, getAccountDetailsFromLocal };
+const extractPrice = (price: string) => {
+  return price.substring(1);
+};
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+
+  console.log('parts', parts);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+export {
+  getCookie,
+  saveAccountDetailsInLocal,
+  extractPrice,
+  getAccountDetailsFromLocal,
+};

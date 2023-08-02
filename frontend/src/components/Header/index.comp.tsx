@@ -68,10 +68,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface HeaderSearchProps {
-  links: { link: string; label: string }[];
-}
-
 const linksCategories = [{ label: 'Categories', link: '/categories' }];
 const linksLogin = [{ label: 'Login', link: '/login' }];
 
@@ -90,11 +86,6 @@ const HeaderSearch = () => {
     setAutoCompleteValue(options?.[0]?.name);
   }, []);
 
-  // const options = [
-  //   { value: 'chocolate', label: 'Chocolate' },
-  //   { value: 'strawberry', label: 'Strawberry' },
-  //   { value: 'vanilla', label: 'Vanilla' },
-  // ];
   const onChangeAutoComplete = (e) => {
     setAutoCompleteValue(e);
 
@@ -142,9 +133,12 @@ const HeaderSearch = () => {
               <UserAccountIcon />
             </div>
           )}
-          <Link to="/cart">
-            <BsCart2 size={'20px'} />
-          </Link>
+
+          {loginSlice.token && (
+            <Link to="/cart">
+              <BsCart2 size={'20px'} />
+            </Link>
+          )}
         </Group>
       </div>
     </Header>

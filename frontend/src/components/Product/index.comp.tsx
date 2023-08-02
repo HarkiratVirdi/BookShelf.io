@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 import { Link } from 'react-router-dom';
+import { BsCartPlus } from 'react-icons/bs';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -48,6 +49,8 @@ const ProductCard = (props: IBook) => {
       {gen}
     </Badge>
   ));
+
+  console.log('features', features, genre);
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
@@ -92,7 +95,7 @@ const ProductCard = (props: IBook) => {
           </Button>
         </Link>
         <ActionIcon variant="default" radius="md" size={36}>
-          <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
+          <BsCartPlus />
         </ActionIcon>
       </Group>
     </Card>
