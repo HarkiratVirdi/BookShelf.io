@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard/index.page';
 import Product from './pages/Product/index.page';
 import Cart from './pages/Cart/index.page';
 import BookCategories from './pages/BookCategories/index.page';
+import Checkout from './pages/Checkout/index.page'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/categories" element={<BookCategories />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -4,16 +4,8 @@ import { IBook } from '../../interfaces/Book.interface';
 import BannerCarousel from '../../components/BannerCarousel/index.comp';
 import HeaderSearch from '../../components/Header/index.comp';
 import DashboardBooks from '../../components/DashboardBooks/index.comp';
-import {
-  Container,
-  Grid,
-  SimpleGrid,
-  Skeleton,
-  useMantineTheme,
-  rem,
-} from '@mantine/core';
+import { Container, Grid, SimpleGrid, Skeleton, useMantineTheme, rem } from '@mantine/core';
 import FooterLinks from '../../components/Footer/index.comp';
-import { title } from 'process';
 
 const sampleProduct: IBook = {
   _id: '1',
