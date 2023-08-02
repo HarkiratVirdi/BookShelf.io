@@ -4,7 +4,8 @@ import { Card, Text, Button, Divider } from "@mantine/core";
 import { IBook } from "../../interfaces/Book.interface";
 import Layout from "../Layout/index.comp";
 import Counter from "../Counter/index.comp";
-import { FaPaypal, FaCcVisa, FaCcMastercard } from "react-icons/fa";
+import { FaCcPaypal, FaCcVisa, FaCcMastercard } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const sampleProduct: IBook = {
   _id: "1",
@@ -95,7 +96,21 @@ const Checkout = () => {
             <div style={{ marginTop: "16px" }}>
               <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
               {totalPrice}
+              <Link to="/cart">
+              <Text weight={700}
+              style={{
+                position: "absolute",
+                bottom: "16px",
+                right: "16px",
+                color: "#007bff", 
+                cursor: "pointer",
+              }}
+            >
+              Return to Cart
+            </Text>
+            </Link>
             </div>
+
           </Card>
           <div style={{ margin: "16px 0" }}></div>
           <Card shadow="sm" padding="md" style={{ flex: 1 }}>
@@ -121,6 +136,14 @@ const Checkout = () => {
               <strong>Email: </strong>
               {sampleCustomer.email}
             </Text>
+
+            <Button
+              mt={"md"}
+              size="md"
+              style={{ position: "absolute", bottom: "16px", right: "16px" }}
+            >
+              Edit
+            </Button>
           </Card>
         </Grid.Col>
 
@@ -150,10 +173,13 @@ const Checkout = () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginBottom: "5px"
+                  marginBottom: "5px",
                 }}
               >
-                <Radio value="paypal" style={{ alignItems: "center", marginRight: "10px" }} />
+                <Radio
+                  value="paypal"
+                  style={{ alignItems: "center", marginRight: "10px" }}
+                />
                 PayPal
               </Text>
               <Text
@@ -161,7 +187,7 @@ const Checkout = () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginBottom: "5px"
+                  marginBottom: "5px",
                 }}
               >
                 <Radio value="visa" style={{ marginRight: "8px" }} />
@@ -172,7 +198,7 @@ const Checkout = () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginBottom: "5px"
+                  marginBottom: "5px",
                 }}
               >
                 <Radio value="mastercard" style={{ marginRight: "8px" }} />
@@ -187,7 +213,7 @@ const Checkout = () => {
                 marginTop: "16px",
               }}
             >
-              <FaPaypal style={{ fontSize: "24px", margin: "0 8px" }} />
+              <FaCcPaypal style={{ fontSize: "24px", margin: "0 8px" }} />
               <FaCcVisa style={{ fontSize: "24px", margin: "0 8px" }} />
               <FaCcMastercard style={{ fontSize: "24px", margin: "0 8px" }} />
             </div>
@@ -204,9 +230,22 @@ const Checkout = () => {
               label="Card Holder Name"
               placeholder="Enter card holder name"
             />
-            <Button mt={"md"} size="lg">
-              Complete
-            </Button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "16px",
+              }}
+            >
+              <Link to="/">
+                <Button mt={"md"} size="lg" color="red">
+                  Cancel
+                </Button>
+              </Link>
+              <Button mt={"md"} size="lg">
+                Complete
+              </Button>
+            </div>
           </Card>
         </Grid.Col>
       </Grid>
