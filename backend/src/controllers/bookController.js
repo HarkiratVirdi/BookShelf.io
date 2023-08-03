@@ -1,7 +1,7 @@
 const Book = require('../models/book');
 const { createSuccessResponse, createErrorResponse } = require('../response.js');
 const logger = require('../logger');
-const { saveImage } = require('../aws');
+const { saveImage, getImage, deleteImage } = require('../aws');
 const { randomUUID } = require('crypto');
 const mongoose = require('mongoose');
 
@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
 
   try {
     await book.save();
-    saveImage(imageId, req.file.buffer);
+    await saveImage(imageId, req.file.buffer);
     logger.debug({ book }, 'Saving book: ');
     logger.info({ book }, 'Save book: success');
     res.status(202).json(createSuccessResponse({ message: 'Book is successfully saved' }));
@@ -82,6 +82,8 @@ exports.byId = async (req, res, next) => {
 //update book info
 exports.update = async (req, res, next) => {
   const id = req.params.id;
+  const imageId = randomUUID();
+
   if (!mongoose.isValidObjectId(id)) {
     res.status(404).json(createErrorResponse({ status: 'Page not found' }));
   }
@@ -106,8 +108,13 @@ exports.update = async (req, res, next) => {
           genre: req.body.genre,
           price: req.body.price,
           description: req.body.description,
+          image: `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/${imageId}`,
         };
         const updatedBook = await Book.findOneAndUpdate({ _id: id }, updateFields);
+        const url = new URL(foundBook.image);
+        const oldImageId = url.pathname.split('/').pop();
+        await deleteImage(oldImageId);
+        await saveImage(imageId, req.file.buffer);
         logger.info(`Book with id ${id} was successfully updated`);
         res.status(200).json(createSuccessResponse({ status: 'Book updated', id: id }));
       }
@@ -135,6 +142,7 @@ exports.delete = async (req, res, next) => {
     } else {
       logger.debug('Deleting book: ' + id);
       await Book.findByIdAndDelete(id);
+      await deleteImage(id);
       res.status(200).json(createSuccessResponse({ status: 'Book deleted: ', id: id }));
     }
   } catch (error) {
