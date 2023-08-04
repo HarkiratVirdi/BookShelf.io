@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Title, Grid, TextInput, Select, Radio } from '@mantine/core';
+import { Title, Grid, TextInput, Select, Radio, Group } from '@mantine/core';
 import { Card, Text, Button, Divider } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 import Layout from '../Layout/index.comp';
@@ -7,6 +7,8 @@ import Counter from '../Counter/index.comp';
 import { FaCcPaypal, FaCcVisa, FaCcMastercard } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { extractPrice } from '../../utils';
+import { useSelector } from 'react-redux';
+import { cartState } from '../../store/Cart/cart.selector';
 
 const sampleProduct: IBook = {
   _id: '1',
@@ -40,18 +42,18 @@ const sampleCustomer = {
 };
 
 const Checkout = () => {
-  const cartBooks = [{ sampleProduct }, { sampleProduct }];
+  const { items: cartBooks } = useSelector(cartState);
   let totalPrice: number = 0;
 
   if (cartBooks.length > 0) {
     for (const c of cartBooks) {
-      totalPrice += Number(extractPrice(c.sampleProduct.price));
+      totalPrice += Number(extractPrice(c.price));
     }
   }
 
   return (
     <Layout>
-      <Text weight={700} fz="xl">
+      <Text weight={700} ml={'md'} fz="xl">
         Checkout
       </Text>
       <Grid gutter="md">
@@ -66,7 +68,7 @@ const Checkout = () => {
             </Text>
             {cartBooks.map((product) => (
               <div
-                key={product.sampleProduct._id}
+                key={product._id}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -74,8 +76,8 @@ const Checkout = () => {
                 }}
               >
                 <img
-                  src={product.sampleProduct.image}
-                  alt={product.sampleProduct.title}
+                  src={product.image}
+                  alt={product.title}
                   style={{
                     width: '50px',
                     height: '50px',
@@ -86,30 +88,22 @@ const Checkout = () => {
                   }}
                 />
                 <div style={{ flex: 1, marginRight: '10px' }}>
-                  <Text weight={700}>{product.sampleProduct.title} </Text> by{' '}
-                  {product.sampleProduct.author}
+                  <Text weight={700}>{product.title} </Text> by {product.author}
                 </div>
-                <p style={{ margin: '0' }}>{product.sampleProduct.price}</p>
+                <p style={{ margin: '0' }}>{product.price}</p>
               </div>
             ))}
-            <div style={{ marginTop: '16px' }}>
+            <div className="mt-4">
               <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
               {totalPrice}
-              <Link to="/cart">
-                <Text
-                  weight={700}
-                  style={{
-                    position: 'absolute',
-                    bottom: '16px',
-                    right: '16px',
-                    color: '#007bff',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Return to Cart
-                </Text>
-              </Link>
             </div>
+            <Group mt={'md'} position="right">
+              <Link className="text-right" to="/cart">
+                <Button>
+                  <Text weight={700}>Return to Cart</Text>
+                </Button>
+              </Link>
+            </Group>
           </Card>
           <div style={{ margin: '16px 0' }}></div>
           <Card shadow="sm" padding="md" style={{ flex: 1 }}>
@@ -136,13 +130,13 @@ const Checkout = () => {
               {sampleCustomer.email}
             </Text>
 
-            <Button
-              mt={'md'}
-              size="md"
-              style={{ position: 'absolute', bottom: '16px', right: '16px' }}
-            >
-              Edit
-            </Button>
+            <Group mt={'md'} position="right">
+              <Link className="text-right" to="/cart">
+                <Button>
+                  <Text weight={700}>Edit</Text>
+                </Button>
+              </Link>
+            </Group>
           </Card>
         </Grid.Col>
 
@@ -153,6 +147,7 @@ const Checkout = () => {
             </Text>
 
             <TextInput
+              mb={'xl'}
               label={
                 <Text weight={700} fz="md">
                   Coupon Code
@@ -161,67 +156,8 @@ const Checkout = () => {
               placeholder="Enter coupon code"
             />
 
-            <Radio.Group
-              label={<Text weight={700}>Payment Type</Text>}
-              defaultValue="paypal"
-              onChange={() => {}}
-              size="md"
-            >
-              <Text
-                fz="sm"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '5px',
-                }}
-              >
-                <Radio
-                  value="paypal"
-                  style={{ alignItems: 'center', marginRight: '10px' }}
-                />
-                PayPal
-              </Text>
-              <Text
-                fz="sm"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '5px',
-                }}
-              >
-                <Radio value="visa" style={{ marginRight: '8px' }} />
-                Visa
-              </Text>
-              <Text
-                fz="sm"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '5px',
-                }}
-              >
-                <Radio value="mastercard" style={{ marginRight: '8px' }} />
-                Mastercard
-              </Text>
-            </Radio.Group>
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '16px',
-              }}
-            >
-              <FaCcPaypal style={{ fontSize: '24px', margin: '0 8px' }} />
-              <FaCcVisa style={{ fontSize: '24px', margin: '0 8px' }} />
-              <FaCcMastercard style={{ fontSize: '24px', margin: '0 8px' }} />
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <Text td="underline" weight={700}>
-                Final total: ${totalPrice}
-              </Text>
-            </div>
             <TextInput
+              mt={'xl'}
               label="Email Address"
               placeholder="Enter email address"
             />
@@ -229,6 +165,12 @@ const Checkout = () => {
               label="Card Holder Name"
               placeholder="Enter card holder name"
             />
+
+            <div style={{ marginTop: '16px' }}>
+              <Text td="underline" weight={700}>
+                Final total: ${totalPrice}
+              </Text>
+            </div>
             <div
               style={{
                 display: 'flex',
