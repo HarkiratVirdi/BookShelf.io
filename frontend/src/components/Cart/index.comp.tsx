@@ -51,7 +51,7 @@ const Cart = () => {
       >
         <div>
           <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
-          {totalPrice}
+          {totalPrice.toFixed(2)}
         </div>
 
         {cartBooks.length === 0 ? (

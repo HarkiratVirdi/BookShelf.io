@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { extractPrice } from '../../utils';
 import { useSelector } from 'react-redux';
 import { cartState } from '../../store/Cart/cart.selector';
+import { addressState } from '../../store/Address/address.selector';
+import { authState } from '../../store/Auth/auth.selector';
 
 const sampleProduct: IBook = {
   _id: '1',
@@ -43,6 +45,8 @@ const sampleCustomer = {
 
 const Checkout = () => {
   const { items: cartBooks } = useSelector(cartState);
+  const addressSlice = useSelector(addressState);
+  const userSlice = useSelector(authState);
   let totalPrice: number = 0;
 
   if (cartBooks.length > 0) {
@@ -111,23 +115,22 @@ const Checkout = () => {
               Shipping Information
             </Text>
             <Text>
-              <strong>Name:</strong> {sampleCustomer.firstName}{' '}
-              {sampleCustomer.lastName}
+              <strong>Name:</strong> {userSlice.firstName} {userSlice.lastName}
             </Text>
 
             <Text>
-              <strong>Address:</strong> {sampleCustomer.address}
+              <strong>Address:</strong> {addressSlice.street}
             </Text>
             <Text>
-              <strong>City:</strong> {sampleCustomer.city}
+              <strong>City:</strong> {addressSlice.city}
             </Text>
             <Text>
               <strong>Province: </strong>
-              {sampleCustomer.province}
+              {addressSlice.province}
             </Text>
             <Text>
               <strong>Email: </strong>
-              {sampleCustomer.email}
+              {userSlice.email}
             </Text>
 
             <Group mt={'md'} position="right">
