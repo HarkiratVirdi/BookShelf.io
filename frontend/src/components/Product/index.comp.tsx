@@ -37,6 +37,7 @@ const useStyles = createStyles((theme) => ({
     textTransform: 'uppercase',
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
+    height: 40,
   },
 }));
 
@@ -56,7 +57,7 @@ const ProductCard = (props: IBook) => {
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
         <Image
-          styles={{ image: { objectFit: 'contain' } }}
+          styles={{ image: { objectFit: 'cover' } }}
           src={image}
           alt={title}
           height={180}
@@ -65,15 +66,15 @@ const ProductCard = (props: IBook) => {
 
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
-          <Text fz="lg" fw={500}>
+          <Text lineClamp={1} fz="lg" fw={500}>
             {title}
           </Text>
-          <Badge size="sm">{author}</Badge>
         </Group>
+        <Badge size="sm">{author}</Badge>
       </Card.Section>
 
       <Card.Section className={classes.section}>
-        <Text mt="md" className={classes.label} c="dimmed">
+        <Text lineClamp={2} mt="md" className={classes.label} c="dimmed">
           {description}
         </Text>
         {features?.length > 0 && (

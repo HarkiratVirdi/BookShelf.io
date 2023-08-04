@@ -52,7 +52,7 @@ const ProductPage = () => {
           <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={50}>
             <Grid.Col span={6}>
               <Image
-                maw={540}
+                maw={350}
                 mx="auto"
                 radius="lg"
                 src={data?.book?.image}
@@ -67,7 +67,7 @@ const ProductPage = () => {
                 {data?.book?.description}
               </Text>
               <Text mb={'sm'} fz="md" fw={600}>
-                Price: ${data?.book?.price}
+                Price: {data?.book?.price}
               </Text>
               <Text mb={'sm'} fz="md" fw={600}>
                 Written By: {data?.book?.author}
