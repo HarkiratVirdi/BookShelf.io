@@ -11,7 +11,7 @@ import { authState } from '../../store/Auth/auth.selector';
 import { useNavigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
