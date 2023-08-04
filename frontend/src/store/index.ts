@@ -3,8 +3,9 @@ import createSagaMiddleware from 'redux-saga';
 import authReducer from './Auth/auth.reducer';
 import { authApi } from '../apis/authApi';
 import { bookApi } from '../apis/bookApi';
-import searchReducer from './Search/search.reducer';
+import addressReducer from './Address/address.reducer';
 import cartReducer from './Cart/cart.reducer';
+import { addressApi } from '../apis/addressApi';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,8 +19,9 @@ export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
+    [addressApi.reducerPath]: addressApi.reducer,
     auth: authReducer,
-    search: searchReducer,
+    address: addressReducer,
     cart: cartReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({

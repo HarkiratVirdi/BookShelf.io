@@ -6,9 +6,10 @@ import { Stepper, Button, Group, Card, Text } from '@mantine/core';
 import Layout from '../../components/Layout/index.comp';
 import PaymentMethod from '../../components/PaymentMethod';
 import AddressForm from '../../components/AddressForm';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authState } from '../../store/Auth/auth.selector';
 import { useNavigate } from 'react-router-dom';
+import { storeAddressInfo } from '../../store/Address/address.reducer';
 
 const CheckoutPage = () => {
   const [active, setActive] = useState(0);
@@ -18,12 +19,43 @@ const CheckoutPage = () => {
     setActive((current) => (current > 0 ? current - 1 : current));
   const authStore = useSelector(authState);
   const navigate = useNavigate();
+  const [highestStepVisited, setHighestStepVisited] = useState(active);
+  const dispatch = useDispatch();
+
+  const [addressInfo, setAddressInfo] = useState({
+    street: '',
+    city: '',
+    postal: '',
+    province: '',
+  });
 
   useEffect(() => {
     if (!authStore.email) {
       navigate('/login');
     }
   }, []);
+
+  const shouldAllowSelectStep = (step: number) =>
+    highestStepVisited >= step && active !== step;
+
+  const handleStepChange = (nextStep: number) => {
+    const isOutOfBounds = nextStep > 3 || nextStep < 0;
+
+    if (isOutOfBounds) {
+      return;
+    }
+
+    setActive(nextStep);
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
+  };
+
+  const onAddressSubmit = () => {
+    dispatch(storeAddressInfo(addressInfo));
+  };
+
+  const changeAddressInfo = (e) => {
+    setAddressInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   return (
     <>
@@ -34,18 +66,29 @@ const CheckoutPage = () => {
             <Stepper.Step label="Address Info" description="Shipment Details">
               <div className="flex justify-center">
                 <Card shadow="md" className="w-96" padding="xl">
-                  <AddressForm />
+                  <AddressForm
+                    addressInfo={addressInfo}
+                    changeAddressInfo={changeAddressInfo}
+                  />
                 </Card>
               </div>
             </Stepper.Step>
-            <Stepper.Step label="Payment" description="Type Of Payment">
+            <Stepper.Step
+              allowStepSelect={shouldAllowSelectStep(1)}
+              label="Payment"
+              description="Type Of Payment"
+            >
               <div className="flex justify-center">
                 <Card shadow="md" padding="xl">
                   <PaymentMethod />
                 </Card>
               </div>
             </Stepper.Step>
-            <Stepper.Step label="Checkout" description="Confirm Order">
+            <Stepper.Step
+              allowStepSelect={shouldAllowSelectStep(1)}
+              label="Checkout"
+              description="Confirm Order"
+            >
               <Checkout />
             </Stepper.Step>
             <Stepper.Completed>
@@ -53,10 +96,20 @@ const CheckoutPage = () => {
             </Stepper.Completed>
           </Stepper>
           <Group position={'apart'} mt="xl">
-            <Button variant="default" onClick={prevStep}>
+            <Button
+              variant="default"
+              onClick={() => handleStepChange(active - 1)}
+            >
               Back
             </Button>
-            <Button onClick={nextStep}>Next step</Button>
+            <Button
+              onClick={() => {
+                onAddressSubmit();
+                handleStepChange(active + 1);
+              }}
+            >
+              Next step
+            </Button>
           </Group>
         </div>
       </Layout>
