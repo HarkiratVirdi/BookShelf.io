@@ -1,3 +1,5 @@
+import cookies from 'js-cookie';
+
 export interface ILoginState {
   email: string;
   password: string;
@@ -26,11 +28,11 @@ const extractPrice = (price: string) => {
 };
 
 function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
+  const userInfo = cookies.get('userInfo');
 
-  console.log('parts', parts);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+  if (userInfo) {
+    return JSON.parse(userInfo);
+  }
 }
 
 export {

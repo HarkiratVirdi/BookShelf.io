@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Radio, Group } from '@mantine/core';
 
-const PaymentMethod = () => {
+interface IPaymentMethod {
+  value: string;
+  selectValue: Dispatch<SetStateAction<string>>;
+}
+
+const PaymentMethod = ({ value, selectValue }: IPaymentMethod) => {
+  const changeRadioValue = (e) => {
+    selectValue(e.target.value);
+  };
+
   return (
     <div>
       <Radio.Group
@@ -10,9 +19,13 @@ const PaymentMethod = () => {
         description="Payment Method"
         withAsterisk
       >
-        <Group mt="xs">
-          <Radio value="Paypal" label="Paypal" />
-          <Radio value="Cash" label="Cash on Delivery" />
+        <Group onChange={changeRadioValue} mt="xs">
+          <Radio checked={value === 'Paypal'} value="Paypal" label="Paypal" />
+          <Radio
+            checked={value === 'Cash'}
+            value="Cash"
+            label="Cash on Delivery"
+          />
         </Group>
       </Radio.Group>
     </div>

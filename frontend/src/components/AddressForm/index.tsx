@@ -1,8 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
 import { TextInput } from '@mantine/core';
-import { IconAt } from '@tabler/icons-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addressState } from '../../store/Address/address.selector';
 
 interface IAddressForm {
   addressInfo: Record<string, string>;
@@ -10,8 +7,6 @@ interface IAddressForm {
 }
 
 const AddressForm = ({ addressInfo, changeAddressInfo }: IAddressForm) => {
-  const addressSlice = useSelector(addressState);
-
   return (
     <form>
       <TextInput

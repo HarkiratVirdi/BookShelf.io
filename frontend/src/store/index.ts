@@ -6,13 +6,15 @@ import { bookApi } from '../apis/bookApi';
 import addressReducer from './Address/address.reducer';
 import cartReducer from './Cart/cart.reducer';
 import { addressApi } from '../apis/addressApi';
+import { orderApi } from '../apis/orderApi';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const middlewares = [
     sagaMiddleware,
     authApi.middleware,
-    bookApi.middleware
+    bookApi.middleware,
+    addressApi.middleware
 ]
 
 export const store = configureStore({
@@ -20,6 +22,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
     auth: authReducer,
     address: addressReducer,
     cart: cartReducer

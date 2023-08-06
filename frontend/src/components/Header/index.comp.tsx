@@ -82,10 +82,6 @@ const HeaderSearch = () => {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setAutoCompleteValue(options?.[0]?.name);
-  }, []);
-
   const onChangeAutoComplete = (e) => {
     setAutoCompleteValue(e);
 
@@ -124,6 +120,7 @@ const HeaderSearch = () => {
               onChange={(e) => onChangeAutoComplete(e)}
               closeOnSelect={true}
               value={autoCompleteValue}
+              placeholder="Search Books"
             />
           )}
           {!loginSlice.token ? (
