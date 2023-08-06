@@ -10,17 +10,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authState } from '../../store/Auth/auth.selector';
 import { useNavigate } from 'react-router-dom';
 import { storeAddressInfo } from '../../store/Address/address.reducer';
+import {
+  useGetAddressQuery,
+  usePostAddressMutation,
+} from '../../apis/addressApi';
+import { addressState } from '../../store/Address/address.selector';
 
 const CheckoutPage = () => {
   const [active, setActive] = useState(0);
-  const nextStep = () =>
-    setActive((current) => (current < 3 ? current + 1 : current));
-  const prevStep = () =>
-    setActive((current) => (current > 0 ? current - 1 : current));
   const authStore = useSelector(authState);
   const navigate = useNavigate();
   const [highestStepVisited, setHighestStepVisited] = useState(active);
   const dispatch = useDispatch();
+  const [storeAddressApi] = usePostAddressMutation();
+  const addressSlice = useSelector(addressState);
+  const { data: savedAddress, isLoading } = useGetAddressQuery();
+
+  console.log('address api', savedAddress);
 
   const [addressInfo, setAddressInfo] = useState({
     street: '',
@@ -29,11 +35,29 @@ const CheckoutPage = () => {
     province: '',
   });
 
+  const [paymentMethod, setPaymentMethod] = useState('');
+
   useEffect(() => {
     if (!authStore.email) {
       navigate('/login');
     }
   }, []);
+
+  useEffect(() => {
+    const obj = {
+      street: savedAddress.address.addressLine1,
+      city: savedAddress.address.city,
+      postal: savedAddress.address.postalCode,
+      province: savedAddress.address.province,
+    };
+
+    dispatch(storeAddressInfo(obj));
+
+    setAddressInfo((prev) => ({
+      ...prev,
+      ...obj,
+    }));
+  }, [isLoading]);
 
   const shouldAllowSelectStep = (step: number) =>
     highestStepVisited >= step && active !== step;
@@ -49,8 +73,20 @@ const CheckoutPage = () => {
     setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
   };
 
-  const onAddressSubmit = () => {
-    dispatch(storeAddressInfo(addressInfo));
+  const onAddressSubmit = async () => {
+    const obj = {
+      addressLine1: addressInfo.street,
+      addressLine2: ' ',
+      city: addressInfo.city,
+      province: addressInfo.province,
+      postalCode: addressInfo.postal,
+      country: 'CA',
+    };
+
+    const data: any = await storeAddressApi(obj);
+    if (data?.status === 'ok') {
+      dispatch(storeAddressInfo(addressInfo));
+    }
   };
 
   const changeAddressInfo = (e) => {
@@ -80,7 +116,10 @@ const CheckoutPage = () => {
             >
               <div className="flex justify-center">
                 <Card shadow="md" padding="xl">
-                  <PaymentMethod />
+                  <PaymentMethod
+                    value={paymentMethod}
+                    selectValue={setPaymentMethod}
+                  />
                 </Card>
               </div>
             </Stepper.Step>

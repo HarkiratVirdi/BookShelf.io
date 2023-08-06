@@ -1,18 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getAccountDetailsFromLocal, getCookie } from '../../utils';
-import cookieUserInfo from '../../hooks/CookieUserInfo';
+import { getCookie } from '../../utils';
 
-const getCookies = getCookie('token');
+const userInfo = getCookie('userInfo');
 
-console.log("get cookie", getCookie)
 const initialState = {
   isLoading: false,
   errorMsg: '',
-  firstName:  '',
-  lastName: '',
-  email:  '',
+  firstName:  userInfo.firstName,
+  lastName: userInfo.lastName,
+  email:  userInfo.email,
   password: '',
-  token: '',
+  token: userInfo.token,
 }
 
 export const authSlice = createSlice({
