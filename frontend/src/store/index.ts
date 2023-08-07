@@ -14,7 +14,8 @@ const middlewares = [
     sagaMiddleware,
     authApi.middleware,
     bookApi.middleware,
-    addressApi.middleware
+    addressApi.middleware,
+    orderApi.middleware
 ]
 
 export const store = configureStore({

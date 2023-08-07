@@ -91,13 +91,10 @@ const ProductCard = (props: IBook) => {
 
       <Group mt="xs">
         <Link to={`/product/${_id}`}>
-          <Button radius="md" style={{ flex: 1 }}>
+          <Button fullWidth={true} radius="md">
             Go the product page
           </Button>
         </Link>
-        <ActionIcon variant="default" radius="md" size={36}>
-          <BsCartPlus />
-        </ActionIcon>
       </Group>
     </Card>
   );
