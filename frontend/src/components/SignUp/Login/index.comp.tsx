@@ -19,6 +19,8 @@ import FooterBanner from '../../FooterBanner/footerbner';
 import Products from '../../Products/soldproducts';
 import React, { useEffect } from 'react';
 
+
+
 function InputPassword({ className, style, ...others }: PasswordInputProps) {
   return (
     <div className={className} style={style}>
@@ -134,7 +136,7 @@ const Login = ({ changeToLoginPage }: any) => {
 
 
         <header>
-
+        
         <div>
 
       <AdvertBanner />
@@ -152,8 +154,8 @@ const Login = ({ changeToLoginPage }: any) => {
             </Link>
             
 
-            <Link to={''}>
-              ABOUT
+            <Link to={`/about`}>
+              MEMBERSHIP
             </Link>
 
 
@@ -167,7 +169,6 @@ const Login = ({ changeToLoginPage }: any) => {
                 </Link>
 
                
-
                 <Link to={''}>
 
                 <button  className="btnLogin-popup" type="button"  >

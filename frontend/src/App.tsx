@@ -6,24 +6,28 @@ import Dashboard from './pages/Dashboard/index.comp';
 
 
 import Sale from './pages/productdetail/sales';                     /*```*******````````*/
-import Homr from './pages/Homr';                                    /*```*******````````*/
+import SelectAccount from './pages/selectAccount';                                    /*```*******````````*/
 import About from './pages/About';                                  /*```*******````````*/
 import TeamMembers from './pages/teamMember';                        /*```*******````````*/
+import NewAccount from './pages/NewAccount';
 
 
 function App() {
   return (
     <div className="App">
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<About/>} />
 
           <Route path="/productdetail" element={<Sale img="./In_Pursuit_of_the_Unknown.jpg" name= "In Pursuit of the Unknown" author="Ian Stewart" price="61" seller="anonymous"/> } />
 
-          <Route index element={<Homr/>} />
-          <Route index element={<About/>} />
-          <Route index  element={<TeamMembers/>} />
+          <Route path="/selectaccount" element={<SelectAccount/>} />
+
+          <Route path="/useraccount" element={<NewAccount/>} />
+
+          {/* <Route index  element={<TeamMembers/>} /> */}
         </Routes>
       </BrowserRouter>
     </div>
