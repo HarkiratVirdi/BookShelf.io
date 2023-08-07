@@ -44,19 +44,21 @@ const CheckoutPage = () => {
   }, []);
 
   useEffect(() => {
-    const obj = {
-      street: savedAddress.address.addressLine1,
-      city: savedAddress.address.city,
-      postal: savedAddress.address.postalCode,
-      province: savedAddress.address.province,
-    };
+    if (savedAddress) {
+      const obj = {
+        street: savedAddress.address.addressLine1,
+        city: savedAddress.address.city,
+        postal: savedAddress.address.postalCode,
+        province: savedAddress.address.province,
+      };
 
-    dispatch(storeAddressInfo(obj));
+      dispatch(storeAddressInfo(obj));
 
-    setAddressInfo((prev) => ({
-      ...prev,
-      ...obj,
-    }));
+      setAddressInfo((prev) => ({
+        ...prev,
+        ...obj,
+      }));
+    }
   }, [isLoading]);
 
   const shouldAllowSelectStep = (step: number) =>

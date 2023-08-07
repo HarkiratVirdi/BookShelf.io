@@ -4,25 +4,14 @@ import { Card, Text, Button, Divider } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 import Layout from '../Layout/index.comp';
 import Counter from '../Counter/index.comp';
-import { FaCcPaypal, FaCcVisa, FaCcMastercard } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { extractPrice } from '../../utils';
 import { useSelector } from 'react-redux';
 import { cartState } from '../../store/Cart/cart.selector';
 import { addressState } from '../../store/Address/address.selector';
 import { authState } from '../../store/Auth/auth.selector';
-
-const sampleProduct: IBook = {
-  _id: '1',
-  title: 'Harry Potter',
-  author: 'JK rowling',
-  price: '$100',
-  image:
-    'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-  genre: ['Horror'],
-  description: 'Harry potter 2000',
-  user: '',
-};
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { useCreateOrderMutation } from '../../apis/orderApi';
 
 const sampleAddress = {
   addressLine1: '100 Testing St',
@@ -32,26 +21,20 @@ const sampleAddress = {
   country: 'Canada',
 };
 
-const sampleCustomer = {
-  _id: '1',
-  firstName: 'first',
-  lastName: 'last',
-  email: 'test@gmail.com',
-  address: sampleAddress.addressLine1,
-  city: sampleAddress.city,
-  province: sampleAddress.province,
-  country: sampleAddress.country,
-};
-
 const Checkout = () => {
   const { items: cartBooks } = useSelector(cartState);
   const addressSlice = useSelector(addressState);
   const userSlice = useSelector(authState);
   let totalPrice: number = 0;
+  const navigate = useNavigate();
+
+  const [createOrderApi] = useCreateOrderMutation();
+
+  const createOrder = () => {};
 
   if (cartBooks.length > 0) {
     for (const c of cartBooks) {
-      totalPrice += Number(extractPrice(c.price));
+      totalPrice += Number(extractPrice(c.price)) * c.quantity;
     }
   }
 
@@ -94,7 +77,10 @@ const Checkout = () => {
                 <div style={{ flex: 1, marginRight: '10px' }}>
                   <Text weight={700}>{product.title} </Text> by {product.author}
                 </div>
-                <p style={{ margin: '0' }}>{product.price}</p>
+                <p style={{ margin: '0' }}>
+                  {product.price} X {product.quantity} = $
+                  {Number(extractPrice(product.price)) * product.quantity}
+                </p>
               </div>
             ))}
             <div className="mt-4">
@@ -110,6 +96,9 @@ const Checkout = () => {
             </Group>
           </Card>
           <div style={{ margin: '16px 0' }}></div>
+        </Grid.Col>
+
+        <Grid.Col span={12} sm={6}>
           <Card shadow="sm" padding="md" style={{ flex: 1 }}>
             <Text weight={700} fz="lg">
               Shipping Information
@@ -141,33 +130,10 @@ const Checkout = () => {
               </Link>
             </Group>
           </Card>
-        </Grid.Col>
-
-        <Grid.Col span={12} sm={6}>
-          <Card shadow="sm" padding="md" style={{ height: '100%' }}>
+          <Card shadow="sm" padding="md">
             <Text weight={700} fz="lg">
               Payment Information
             </Text>
-
-            <TextInput
-              mb={'xl'}
-              label={
-                <Text weight={700} fz="md">
-                  Coupon Code
-                </Text>
-              }
-              placeholder="Enter coupon code"
-            />
-
-            <TextInput
-              mt={'xl'}
-              label="Email Address"
-              placeholder="Enter email address"
-            />
-            <TextInput
-              label="Card Holder Name"
-              placeholder="Enter card holder name"
-            />
 
             <div style={{ marginTop: '16px' }}>
               <Text td="underline" weight={700}>
@@ -186,9 +152,40 @@ const Checkout = () => {
                   Cancel
                 </Button>
               </Link>
-              <Button mt={'md'} size="lg">
-                Complete
-              </Button>
+              <PayPalScriptProvider
+                options={{
+                  currency: 'CAD',
+                  intent: 'capture',
+                  clientId:
+                    'AXnMCPh1Tsj3xKZwxkbKBBDuTmuc0UamGxhaZn60iI1I6nchcUOCVMUjsSEP3UO7tfaRkzoT07ePgT5M',
+                }}
+              >
+                <PayPalButtons
+                  onApprove={(data, actions) => {
+                    return actions.order.capture().then(function (details) {
+                      createOrderApi({
+                        bookIds: cartBooks,
+                        totalPrice: totalPrice,
+                      }).then((data: any) => {
+                        console.log('data', data);
+                        alert('Transaction completed by ' + userSlice.email);
+                        navigate('/');
+                      });
+                    });
+                  }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: totalPrice.toString(),
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                />
+              </PayPalScriptProvider>
             </div>
           </Card>
         </Grid.Col>
