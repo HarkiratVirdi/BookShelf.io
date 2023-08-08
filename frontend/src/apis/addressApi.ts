@@ -7,7 +7,7 @@ export const addressApi = createApi({
   reducerPath: 'addressApi',
   baseQuery: fetchBaseQuery({ 
     baseUrl: baseURL, 
-    headers: {Authorization: `Bearer ${getCookie('userInfo').token}`},
+    headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
   }),
   endpoints: (builder) => ({
     postAddress: builder.mutation({
