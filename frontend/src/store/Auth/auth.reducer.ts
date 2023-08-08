@@ -6,11 +6,11 @@ const userInfo = getCookie('userInfo');
 const initialState = {
   isLoading: false,
   errorMsg: '',
-  firstName:  userInfo.firstName,
-  lastName: userInfo.lastName,
-  email:  userInfo.email,
+  firstName:  userInfo?.firstName || '',
+  lastName: userInfo?.lastName || '',
+  email:  userInfo?.email || '',
   password: '',
-  token: userInfo.token,
+  token: userInfo?.token || '',
 }
 
 export const authSlice = createSlice({
