@@ -6,7 +6,7 @@ import { getCookie } from '../utils';
 export const orderApi = createApi({
   reducerPath: 'orderApi',
   baseQuery: fetchBaseQuery({ baseUrl: baseURL, 
-    headers: {Authorization: `Bearer ${getCookie('userInfo').token}`}}),
+    headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`}}),
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (body) => ({
