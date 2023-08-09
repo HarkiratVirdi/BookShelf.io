@@ -14,7 +14,7 @@ router.get('/books', bookController.retrieve);
 
 router.get('/book/:id', bookController.byId);
 
-router.put('/book/:id', protect, bookController.update);
+router.put('/book/:id', protect, upload.single('image'), bookController.update);
 
 router.delete('/book/:id', protect, bookController.delete);
 

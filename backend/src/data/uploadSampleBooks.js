@@ -23,7 +23,8 @@ async function uploadSampleBooks() {
       await axios.post(`${BASE_URL}/book`, formData, {
         headers: {
           ...formData.getHeaders(),
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FjOGM0OWIxNmY2YmMxY2U3M2EwOCIsImlhdCI6MTY5MTAxMTI2OCwiZXhwIjoxNjkzNjAzMjY4fQ.WbCPYaI5ntWxnlxvQlhFPNQr3FGKvJNl6W-S_i2cUvc',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FjOGM0OWIxNmY2YmMxY2U3M2EwOCIsImlhdCI6MTY5MTAxMTI2OCwiZXhwIjoxNjkzNjAzMjY4fQ.WbCPYaI5ntWxnlxvQlhFPNQr3FGKvJNl6W-S_i2cUvc',
         },
       });
 
