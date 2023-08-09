@@ -4,9 +4,9 @@
   "description": "Bookshelf.io API",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "PRJ666 Team 1",
@@ -32,9 +32,11 @@
     "pino": "^8.14.1",
     "pino-http": "^8.3.3",
     "pino-pretty": "^10.0.0",
+    "supertest": "^6.3.3",
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "jest": "^29.6.2",
     "prettier": "2.8.8"
   }
 }

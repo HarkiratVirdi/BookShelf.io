@@ -172,11 +172,11 @@ exports.byAut = async (req, res, next) => {
 };
 
 //search for book
-exports.searchBook = (req, res) => {
+exports.searchBook = async (req, res, next) => {
   const search = req.query;
 
   try {
-    var books = await.Book.find({ $regex: search, $options: 'i' });
+    var books = await Book.find({ $regex: search, $options: 'i' });
     logger.debug('Found books: ' + books);
 
     res.status(200).json(
