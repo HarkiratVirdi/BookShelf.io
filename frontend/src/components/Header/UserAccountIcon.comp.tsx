@@ -20,6 +20,7 @@ import {
 } from '@tabler/icons-react';
 import { useCookies } from 'react-cookie';
 import { storeUserInfo } from '../../store/Auth/auth.reducer';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   user: {
@@ -66,9 +67,12 @@ const UserAccountIcon = () => {
 
       <Menu.Dropdown>
         <Menu.Label>User</Menu.Label>
-        <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
 
-        <Menu.Divider />
+        <Link to="/userAccount">
+          <Menu.Item icon={<IconSettings size={14} />}>Account</Menu.Item>
+
+          <Menu.Divider />
+        </Link>
 
         <Menu.Item
           onClick={() => {

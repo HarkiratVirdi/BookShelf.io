@@ -168,8 +168,10 @@ const Checkout = () => {
                         totalPrice: totalPrice,
                       }).then((data: any) => {
                         console.log('data', data);
-                        alert('Transaction completed by ' + userSlice.email);
-                        navigate('/');
+                        if (data?.data?.status === 'ok') {
+                          alert('Transaction completed by ' + userSlice.email);
+                          navigate('/');
+                        }
                       });
                     });
                   }}

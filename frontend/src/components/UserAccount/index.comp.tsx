@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Title, Grid, TextInput, Textarea, FileInput } from "@mantine/core";
-import { Card, Text, Button, Divider } from "@mantine/core";
-import Layout from "../Layout/index.comp";
-import Counter from "../Counter/index.comp";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from 'react';
+import { Title, Grid, TextInput, Textarea, FileInput } from '@mantine/core';
+import { Card, Text, Button, Divider } from '@mantine/core';
+import Layout from '../Layout/index.comp';
+import Counter from '../Counter/index.comp';
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserAccount = () => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -43,14 +43,22 @@ const UserAccount = () => {
           {isEditMode ? (
             <TextInput label="First Name" placeholder={generalInfo.firstName} />
           ) : (
-            <TextInput label="First Name" value={generalInfo.firstName} disabled />
+            <TextInput
+              label="First Name"
+              value={generalInfo.firstName}
+              disabled
+            />
           )}
         </Grid.Col>
         <Grid.Col span={6}>
           {isEditMode ? (
             <TextInput label="Last Name" placeholder={generalInfo.lastName} />
           ) : (
-            <TextInput label="Last Name" value={generalInfo.lastName} disabled />
+            <TextInput
+              label="Last Name"
+              value={generalInfo.lastName}
+              disabled
+            />
           )}
         </Grid.Col>
         <Grid.Col span={12}>
@@ -79,16 +87,30 @@ const UserAccount = () => {
       <Grid gutter="md">
         <Grid.Col span={12}>
           {isEditMode ? (
-            <TextInput label="Address Line 1" placeholder={addressInfo.addressLine1} />
+            <TextInput
+              label="Address Line 1"
+              placeholder={addressInfo.addressLine1}
+            />
           ) : (
-            <TextInput label="Address Line 1" value={addressInfo.addressLine1} disabled />
+            <TextInput
+              label="Address Line 1"
+              value={addressInfo.addressLine1}
+              disabled
+            />
           )}
         </Grid.Col>
         <Grid.Col span={12}>
           {isEditMode ? (
-            <TextInput label="Address Line 2" placeholder={addressInfo.addressLine2}/>
+            <TextInput
+              label="Address Line 2"
+              placeholder={addressInfo.addressLine2}
+            />
           ) : (
-            <TextInput label="Address Line 2" value={addressInfo.addressLine2} disabled />
+            <TextInput
+              label="Address Line 2"
+              value={addressInfo.addressLine2}
+              disabled
+            />
           )}
         </Grid.Col>
         <Grid.Col span={3}>
@@ -108,9 +130,16 @@ const UserAccount = () => {
         </Grid.Col>
         <Grid.Col span={3}>
           {isEditMode ? (
-            <TextInput label="Postal Code" placeholder={addressInfo.postalCode} />
+            <TextInput
+              label="Postal Code"
+              placeholder={addressInfo.postalCode}
+            />
           ) : (
-            <TextInput label="Postal Code" value={addressInfo.postalCode} disabled />
+            <TextInput
+              label="Postal Code"
+              value={addressInfo.postalCode}
+              disabled
+            />
           )}
         </Grid.Col>
         <Grid.Col span={3}>
@@ -123,17 +152,17 @@ const UserAccount = () => {
       </Grid>
 
       {isEditMode ? (
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button mt={"md"} size="md" color="red" onClick={toggleEditMode}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button mt={'md'} size="md" color="red" onClick={toggleEditMode}>
             Cancel
           </Button>
-          <Button mt={"md"} size="md">
+          <Button mt={'md'} size="md">
             Save
           </Button>
         </div>
       ) : (
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button mt={"md"} size="md" onClick={toggleEditMode}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button mt={'md'} size="md" onClick={toggleEditMode}>
             Edit
           </Button>
         </div>
