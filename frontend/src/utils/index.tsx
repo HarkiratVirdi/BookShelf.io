@@ -1,3 +1,5 @@
+import cookies from 'js-cookie';
+
 export interface ILoginState {
   email: string;
   password: string;
@@ -21,4 +23,21 @@ const getAccountDetailsFromLocal = (): ILoginState | null => {
   return null;
 };
 
-export { saveAccountDetailsInLocal, getAccountDetailsFromLocal };
+const extractPrice = (price: string) => {
+  return price.substring(1);
+};
+
+function getCookie(name) {
+  const userInfo = cookies.get('userInfo');
+
+  if (userInfo) {
+    return JSON.parse(userInfo);
+  }
+}
+
+export {
+  getCookie,
+  saveAccountDetailsInLocal,
+  extractPrice,
+  getAccountDetailsFromLocal,
+};

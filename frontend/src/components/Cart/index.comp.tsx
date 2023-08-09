@@ -12,52 +12,61 @@ import {
   deleteCartItems,
 } from '../../store/Cart/cart.reducer';
 import { cartState } from '../../store/Cart/cart.selector';
+import { Link } from 'react-router-dom';
+import { extractPrice } from '../../utils';
 
 const Cart = () => {
   const { items: cartBooks } = useSelector(cartState);
-  let totalPrice: number = 0;
+  let totalPrice = 0;
 
   if (cartBooks.length > 0) {
     for (const c of cartBooks) {
-      totalPrice += c.price;
+      totalPrice += Number(extractPrice(c.price)) * c.quantity;
     }
   }
 
   return (
-    <Layout>
-      <div>
-        <Text weight={700} fz="xl">
-          Shopping Cart
-        </Text>
+    <div>
+      <Text weight={700} fz="xl">
+        Shopping Cart
+      </Text>
+      {cartBooks.length === 0 ? (
+        <Text weight={700}>Cart is currently empty</Text>
+      ) : (
+        <ul style={{ listStyle: 'none', padding: 5 }}>
+          {cartBooks.map((product, index) => (
+            <div key={product._id}>
+              <CartProduct product={product} index={index} />
+              <Divider />
+            </div>
+          ))}
+        </ul>
+      )}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: '20px',
+        }}
+      >
+        <div>
+          <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
+          {totalPrice.toFixed(2)}
+        </div>
+
         {cartBooks.length === 0 ? (
-          <Text weight={700}>Cart is currently empty</Text>
-        ) : (
-          <ul style={{ listStyle: 'none', padding: 5 }}>
-            {cartBooks.map((product, index) => (
-              <div key={product._id}>
-                <CartProduct product={product} index={index} />
-                <Divider />
-              </div>
-            ))}
-          </ul>
-        )}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '20px',
-          }}
-        >
-          <div>
-            <Text weight={700}>Subtotal ({cartBooks.length} items)</Text>$
-            {totalPrice}
-          </div>
-          <Button mt={'md'} size="lg">
+          <Button disabled mt={'md'} size="lg">
             Checkout
           </Button>
-        </div>
+        ) : (
+          <Link to="/checkout">
+            <Button mt={'md'} size="lg">
+              Checkout
+            </Button>
+          </Link>
+        )}
       </div>
-    </Layout>
+    </div>
   );
 };
 
@@ -116,7 +125,7 @@ const CartProduct = ({ product, index }) => {
         <Text weight={700}>{product.title}</Text> by {product.author}
       </div>
       <div className="flex items-center">
-        <span className="mr-2">${product.price}</span>
+        <span className="mr-2">{product.price}</span>
         <div className="w-36">
           <Counter
             setCounter={setCounter}
@@ -124,6 +133,7 @@ const CartProduct = ({ product, index }) => {
             ref={itemQuantity}
           />
         </div>
+
         <Button onClick={() => removeCartItem(product)} ml={'sm'} color="red">
           Remove
         </Button>

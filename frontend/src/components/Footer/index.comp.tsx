@@ -114,15 +114,36 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface FooterLinksProps {
-  data: {
-    title: string;
-    links: { label: string; link: string }[];
-  }[];
-}
-
-const FooterLinks = ({ data }: FooterLinksProps) => {
+const FooterLinks = () => {
   const { classes } = useStyles();
+
+  const data = [
+    {
+      title: 'Bookshelf.io',
+      links: [
+        {
+          link: '#',
+          label: 'Contact',
+        },
+        {
+          link: '#',
+          label: 'Privacy',
+        },
+        {
+          link: '#',
+          label: 'Blog',
+        },
+        {
+          link: '#',
+          label: 'Store',
+        },
+        {
+          link: '#',
+          label: 'Careers',
+        },
+      ],
+    },
+  ];
 
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
