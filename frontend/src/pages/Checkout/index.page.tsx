@@ -86,7 +86,8 @@ const CheckoutPage = () => {
     };
 
     const data: any = await storeAddressApi(obj);
-    if (data?.status === 'ok') {
+
+    if (data?.data?.status === 'ok') {
       dispatch(storeAddressInfo(addressInfo));
     }
   };
