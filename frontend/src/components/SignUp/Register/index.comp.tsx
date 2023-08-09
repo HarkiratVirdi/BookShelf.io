@@ -79,7 +79,7 @@ const Register = ({ changeToLoginPage }: any) => {
         console.log('logged in');
         dispatch(storeUserInfo(data));
         setCookie('userInfo', data);
-        navigate('/');
+        window.location.href = '/';
       }
     } catch (err) {
       console.log('error', err);

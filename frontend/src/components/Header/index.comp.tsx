@@ -68,7 +68,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const linksCategories = [{ label: 'Categories', link: '/categories' }];
 const linksLogin = [{ label: 'Login', link: '/login' }];
 
 const HeaderSearch = () => {
@@ -101,7 +100,6 @@ const HeaderSearch = () => {
     <Header height={56} className={classes.header} mb={12}>
       <div className={classes.inner}>
         <Group>
-          <Burger opened={opened} onClick={toggle} size="sm" />
           <Link to="/">
             <Title color="darkBlue" order={3}>
               Bookshelf.io
@@ -110,9 +108,6 @@ const HeaderSearch = () => {
         </Group>
 
         <Group>
-          <Group ml={50} spacing={5} className={classes.links}>
-            {items(linksCategories)}
-          </Group>
           {!isLoading && (
             <SelectSearch
               search
