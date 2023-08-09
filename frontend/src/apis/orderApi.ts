@@ -16,7 +16,11 @@ export const orderApi = createApi({
       }),
       transformResponse: (response) => response,
       transformErrorResponse: (response: any) => response.data.error
-    })
+    }),
+    // getOrders: builder.query({
+    //   query: () => ``,
+
+    // })
   }),
 });
 

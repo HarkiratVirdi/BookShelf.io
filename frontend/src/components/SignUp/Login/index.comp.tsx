@@ -111,7 +111,8 @@ const Login = ({ changeToLoginPage }: any) => {
         console.log('logged in');
         dispatch(storeUserInfo(data));
         setCookie('userInfo', data);
-        navigate('/');
+        // navigate('/');
+        window.location.href = '/';
       }
     } catch (err) {
       console.log('error', err);
