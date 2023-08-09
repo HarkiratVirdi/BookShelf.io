@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Title, Grid, TextInput, Textarea, FileInput } from "@mantine/core";
-import ProductCard from "../Product/index.comp";
-import { Card, Text, Button, Divider } from "@mantine/core";
-import { IBook } from "../../interfaces/Book.interface";
+import { Text, Button } from "@mantine/core";
 import Layout from "../Layout/index.comp";
 import Counter from "../Counter/index.comp";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +38,7 @@ const NewPost = () => {
             label="Author"
             placeholder="J. K. Rowling"
             value={formData.author}
-            onChange={(event) => handleChange("maker", event.target.value)}
+            onChange={(event) => handleChange("author", event.target.value)}
             required
           />
         </Grid.Col>
@@ -49,7 +47,7 @@ const NewPost = () => {
             label="Genre(s)"
             placeholder="Fiction, Fantasy"
             value={formData.genre}
-            onChange={(event) => handleChange("category", event.target.value)}
+            onChange={(event) => handleChange("genre", event.target.value)}
             required
           />
           <TextInput
@@ -71,9 +69,10 @@ const NewPost = () => {
             }
           />
         </Grid.Col>
-        <Grid.Col span={2}>
-          <FileInput placeholder="Upload File" label="Image" />
+        <Grid.Col span={2}>          
+          <FileInput placeholder="Click to Upload File" label="Image" />         
         </Grid.Col>
+        
         <Grid.Col span={12}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Link to="/">
