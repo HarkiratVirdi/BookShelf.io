@@ -123,7 +123,7 @@ const Checkout = () => {
             </Text>
 
             <Group mt={'md'} position="right">
-              <Link className="text-right" to="/cart">
+              <Link className="text-right" to="/useraccount">
                 <Button>
                   <Text weight={700}>Edit</Text>
                 </Button>
