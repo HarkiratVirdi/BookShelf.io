@@ -2,11 +2,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseURL } from '../config';
 import { getCookie } from '../utils';
 
-// Define a service using a base URL and expected endpoints
 export const orderApi = createApi({
   reducerPath: 'orderApi',
-  baseQuery: fetchBaseQuery({ baseUrl: baseURL, 
-    headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`}}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseURL,
+    headers: { Authorization: `Bearer ${getCookie('userInfo')?.token}` },
+  }),
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (body) => ({
@@ -15,13 +16,14 @@ export const orderApi = createApi({
         body,
       }),
       transformResponse: (response) => response,
-      transformErrorResponse: (response: any) => response.data.error
+      transformErrorResponse: (response: any) => response.data.error,
     }),
-    // getOrders: builder.query({
-    //   query: () => ``,
-
-    // })
+    getOrders: builder.query<any, void>({
+      query: () => `users/user/orders`,
+      transformResponse: (response) => response,
+      transformErrorResponse: (response: any) => response.data.error,
+    }),
   }),
 });
 
-export const { useCreateOrderMutation } = orderApi;
+export const { useCreateOrderMutation, useGetOrdersQuery } = orderApi;
