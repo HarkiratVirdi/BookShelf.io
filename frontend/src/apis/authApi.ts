@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseURL } from '../config';
+import { getCookie } from '../utils';
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -24,7 +25,17 @@ export const authApi = createApi({
       transformResponse: (response) => response,
       transformErrorResponse: (response: any) => response.data.error
     }),
+    updateUser: builder.mutation({
+      query: (body) => ({
+        url: `users/user`,
+        method: "PUT",
+        body,
+        headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
+      }),
+      transformResponse: response => response,
+      transformErrorResponse: (response: any) => response.data.error
+    })
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation } = authApi;
