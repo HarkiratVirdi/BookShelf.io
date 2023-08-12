@@ -7,7 +7,11 @@ import {
   createStyles,
   Menu,
 } from '@mantine/core';
-import { IconChevronRight, IconLogout } from '@tabler/icons-react';
+import {
+  IconChevronRight,
+  IconLogout,
+  IconMenuOrder,
+} from '@tabler/icons-react';
 import { authState } from '../../store/Auth/auth.selector';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -67,11 +71,14 @@ const UserAccountIcon = () => {
 
       <Menu.Dropdown>
         <Menu.Label>User</Menu.Label>
-
         <Link to="/userAccount">
           <Menu.Item icon={<IconSettings size={14} />}>Account</Menu.Item>
-
           <Menu.Divider />
+        </Link>
+        <Link to="/orderHistory">
+          <Menu.Item icon={<IconMenuOrder size={14} />}>
+            Order History
+          </Menu.Item>
         </Link>
 
         <Menu.Item
