@@ -12,7 +12,7 @@ const OrderHistory = () => {
     return <div>Error fetching Order History</div>;
   }
 
-  return <div>{data?.map((order) => {})} Order History</div>;
+  return <div> Order History</div>;
 };
 
 export default OrderHistory;

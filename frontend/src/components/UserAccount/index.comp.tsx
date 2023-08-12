@@ -4,31 +4,85 @@ import { Card, Text, Button, Divider } from '@mantine/core';
 import Layout from '../Layout/index.comp';
 import Counter from '../Counter/index.comp';
 import { useDispatch, useSelector } from 'react-redux';
+import { authState } from '../../store/Auth/auth.selector';
+import { addressState } from '../../store/Address/address.selector';
+import { useUpdateAddressMutation } from '../../apis/addressApi';
+import { storeAddressInfo } from '../../store/Address/address.reducer';
+import { useUpdateUserMutation } from '../../apis/authApi';
+import { storeUserInfo } from '../../store/Auth/auth.reducer';
+import { getCookie } from '../../utils';
 
 const UserAccount = () => {
   const [isEditMode, setIsEditMode] = useState(false);
-
+  const authStore = useSelector(authState);
+  const addressStore = useSelector(addressState);
+  const [updateAddress] = useUpdateAddressMutation();
+  const [updateUserInfo] = useUpdateUserMutation();
+  const dispatch = useDispatch();
   const toggleEditMode = () => {
     setIsEditMode((prevEditMode) => !prevEditMode);
   };
 
-  const initialGeneral = {
-    firstName: 'First',
-    lastName: 'Last',
-    email: 'firstlast@gmail.com',
-    password: '********',
-  };
+  console.log('auth store', authStore, addressStore);
 
   const initialAddress = {
-    addressLine1: '1 Yonge St',
-    addressLine2: '250 Main St Unit 12',
+    street: '1 Yonge St',
     city: 'Toronto',
     province: 'ON',
-    postalCode: 'M1M2N2',
+    postal: 'M1M2N2',
     country: 'Canada',
   };
-  const [generalInfo, setGeneralInfo] = useState(initialGeneral);
-  const [addressInfo, setAddressInfo] = useState(initialAddress);
+
+  const [generalInfo, setGeneralInfo] = useState(
+    authStore || { firstName: '', lastName: '', email: '', password: '' }
+  );
+  const [addressInfo, setAddressInfo] = useState(
+    addressStore || initialAddress
+  );
+
+  const onEditAddress = async () => {
+    const obj = {
+      addressLine1: addressInfo.street,
+      addressLine2: ' ',
+      city: addressInfo.city,
+      province: addressInfo.province,
+      postalCode: addressInfo.postal,
+      country: 'Canada',
+    };
+
+    const data: any = await updateAddress(obj);
+
+    if (data?.data?.status === 'Updated address') {
+      dispatch(storeAddressInfo(addressInfo));
+    }
+
+    const userInfo = {
+      firstName: generalInfo.firstName,
+      lastName: generalInfo.lastName,
+      token: getCookie('userInfo')?.token,
+      email: getCookie('userInfo')?.email,
+    };
+
+    const userData: any = await updateUserInfo(userInfo);
+    if (userData?.data?.status === 'User info updated') {
+      dispatch(storeUserInfo(userInfo));
+      alert('Address and user Info updated successfully');
+    }
+  };
+
+  const changeUserInfo = (e) => {
+    return setGeneralInfo((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const changeAddressState = (e) => {
+    return setAddressInfo((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <Layout>
@@ -40,114 +94,75 @@ const UserAccount = () => {
       </Text>
       <Grid gutter="md">
         <Grid.Col span={6}>
-          {isEditMode ? (
-            <TextInput label="First Name" placeholder={generalInfo.firstName} />
-          ) : (
-            <TextInput
-              label="First Name"
-              value={generalInfo.firstName}
-              disabled
-            />
-          )}
+          <TextInput
+            label="First Name"
+            value={generalInfo?.firstName}
+            disabled={!isEditMode}
+            name="firstName"
+            onChange={changeUserInfo}
+          />
         </Grid.Col>
         <Grid.Col span={6}>
-          {isEditMode ? (
-            <TextInput label="Last Name" placeholder={generalInfo.lastName} />
-          ) : (
-            <TextInput
-              label="Last Name"
-              value={generalInfo.lastName}
-              disabled
-            />
-          )}
+          <TextInput
+            name="lastName"
+            onChange={changeUserInfo}
+            label="Last Name"
+            value={generalInfo?.lastName}
+            disabled={!isEditMode}
+          />
         </Grid.Col>
         <Grid.Col span={12}>
-          {isEditMode ? (
-            <TextInput
-              label="Email"
-              type="email"
-              placeholder={generalInfo.email}
-            />
-          ) : (
-            <TextInput label="Email" value={generalInfo.email} disabled />
-          )}
+          <TextInput label="Email" value={generalInfo?.email} disabled />
         </Grid.Col>
         <Grid.Col span={12}>
-          {isEditMode ? (
-            <TextInput label="Password" type="password" />
-          ) : (
-            <TextInput label="Password" value="********" disabled />
-          )}
+          <TextInput label="Password" value="********" disabled />
         </Grid.Col>
       </Grid>
 
-      <Text weight={700} fz="md">
+      <Text mt={'xl'} weight={700} fz="md">
         Address
       </Text>
       <Grid gutter="md">
         <Grid.Col span={12}>
-          {isEditMode ? (
-            <TextInput
-              label="Address Line 1"
-              placeholder={addressInfo.addressLine1}
-            />
-          ) : (
-            <TextInput
-              label="Address Line 1"
-              value={addressInfo.addressLine1}
-              disabled
-            />
-          )}
-        </Grid.Col>
-        <Grid.Col span={12}>
-          {isEditMode ? (
-            <TextInput
-              label="Address Line 2"
-              placeholder={addressInfo.addressLine2}
-            />
-          ) : (
-            <TextInput
-              label="Address Line 2"
-              value={addressInfo.addressLine2}
-              disabled
-            />
-          )}
-        </Grid.Col>
-        <Grid.Col span={3}>
-          {isEditMode ? (
-            <TextInput label="City" placeholder={addressInfo.city} />
-          ) : (
-            <TextInput label="City" value={addressInfo.city} disabled />
-          )}
+          <TextInput
+            label="Address Line 1"
+            placeholder={addressInfo?.street}
+            disabled={!isEditMode}
+            name={'street'}
+            onChange={changeAddressState}
+          />
         </Grid.Col>
 
         <Grid.Col span={3}>
-          {isEditMode ? (
-            <TextInput label="Province" placeholder={addressInfo.province} />
-          ) : (
-            <TextInput label="Province" value={addressInfo.province} disabled />
-          )}
+          <TextInput
+            label="City"
+            name={'city'}
+            value={addressInfo.city}
+            disabled={!isEditMode}
+            onChange={changeAddressState}
+          />
+        </Grid.Col>
+
+        <Grid.Col span={3}>
+          <TextInput
+            label="Province"
+            name={'province'}
+            value={addressInfo.province}
+            disabled={!isEditMode}
+            onChange={changeAddressState}
+          />
         </Grid.Col>
         <Grid.Col span={3}>
-          {isEditMode ? (
-            <TextInput
-              label="Postal Code"
-              placeholder={addressInfo.postalCode}
-            />
-          ) : (
-            <TextInput
-              label="Postal Code"
-              value={addressInfo.postalCode}
-              disabled
-            />
-          )}
+          <TextInput
+            label="Postal Code"
+            name={'postal'}
+            value={addressInfo?.postal}
+            disabled={!isEditMode}
+            onChange={changeAddressState}
+          />
         </Grid.Col>
         <Grid.Col span={3}>
-          {isEditMode ? (
-            <TextInput label="Country" placeholder={addressInfo.country} />
-          ) : (
-            <TextInput label="Country" value={addressInfo.country} disabled />
-          )}
+          <TextInput label="Country" value={'Canada'} disabled />
         </Grid.Col>
       </Grid>
 
@@ -156,7 +171,7 @@ const UserAccount = () => {
           <Button mt={'md'} size="md" color="red" onClick={toggleEditMode}>
             Cancel
           </Button>
-          <Button mt={'md'} size="md">
+          <Button onClick={onEditAddress} mt={'md'} size="md">
             Save
           </Button>
         </div>
