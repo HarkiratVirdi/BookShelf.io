@@ -41,9 +41,22 @@ const sampleProduct2: IBook = {
 
 const Orderhistory = () => {
   const orderHistory = [
-    { _id: 1, items: [{ sampleProduct1 }, { sampleProduct1 }, { sampleProduct1 }] },
-    { _id: 2, items: [{ sampleProduct2 }, { sampleProduct2 }] },
+    {
+      _id: 1,
+      items: [sampleProduct1, sampleProduct1, sampleProduct1],
+    },
+    { _id: 2, items: [sampleProduct2, sampleProduct2] },
   ];
+
+  const orderTotal = (items: IBook[]): number => {
+    let total = 0;
+    for (const i of items) {
+      total += Number(extractPrice(i.price));
+    }
+    return total;
+  };
+
+  console.log("ORDER TOTAL: " + orderTotal(orderHistory[0].items))
 
   return (
     <div>
@@ -56,7 +69,54 @@ const Orderhistory = () => {
         <ul style={{ listStyle: "none", padding: 5 }}>
           {orderHistory.map((order, index) => (
             <div key={order._id}>
-              <OrderHistoryOrder order={order} index={index} />
+              <Text weight={700}>Order #{order._id}</Text>              
+              <ul style={{ listStyle: "none", padding: 5 }}>
+                {order.items.map((item) => (
+                  <li
+                    key={item._id}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "auto 1fr auto",
+                      padding: "20px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          borderRadius: "10%",
+                          objectFit: "cover",
+                          marginRight: "10px",
+                          marginLeft: "10px",
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <Text weight={700}>{item.title}</Text> by {item.author}
+                      <Text weight={700}>Quantity purchased:</Text>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">${item.price}</span>
+                      <div className="w-36">
+                        <Link to={`/product/${item._id}`}>
+                          <Button ml={"sm"}>Go to Product</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Text weight={700}>Order total: ${orderTotal(order.items)}</Text>
               <Divider />
             </div>
           ))}
@@ -70,58 +130,6 @@ const Orderhistory = () => {
         }}
       ></div>
     </div>
-  );
-};
-
-const OrderHistoryOrder = ({ order, index }) => {
-  return (
-    <ul style={{ listStyle: "none", padding: 5 }}>
-      {order.map((item) => (
-          <li
-            key={item.}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto 1fr auto",
-              padding: "20px",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  borderRadius: "10%",
-                  objectFit: "cover",
-                  marginRight: "10px",
-                  marginLeft: "10px",
-                }}
-              />
-            </div>
-
-            <div>
-              <Text weight={700}>{item.title}</Text> by{" "}
-              {item.author}
-            </div>
-            <div className="flex items-center">
-            <span className="mr-2"> Quantity: 3</span>
-              <span className="mr-2">${item.price}</span>
-              <div className="w-36">
-                <Link to={`/product/${item._id}`}>
-                  <Button ml={"sm"}>Go to Product</Button>
-                </Link>
-              </div>
-            </div>
-          </li>
-      ))}
-    </ul>
   );
 };
 
