@@ -10,7 +10,9 @@ import Checkout from './pages/Checkout/index.page';
 import NewPost from './pages/NewPost/index.page';
 import UserAccount from './pages/UserAccount/index.page';
 import OrderHistory from './pages/OrderHistory/index.page';
+import UserBooks from './pages/UserBooks/index.page';
 import ManageBooks from './pages/ManageBooks/index.page';
+
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route path="/newpost" element={<NewPost />} />
           <Route path="/useraccount" element={<UserAccount />} />
           <Route path="/orderHistory" element={<OrderHistory />} />
+          <Route path="/userbooks" element={<UserBooks />} />
           <Route path="/manageBooks" element={<ManageBooks />} />
         </Routes>
       </BrowserRouter>
