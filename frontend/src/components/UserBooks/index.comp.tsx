@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   Image,
@@ -11,32 +11,32 @@ import {
   rem,
   Title,
   Grid,
-} from '@mantine/core';
-import { IBook } from '../../interfaces/Book.interface';
-import { useGetBooksQuery } from '../../apis/bookApi';
-import { Link } from 'react-router-dom';
+} from "@mantine/core";
+import { IBook } from "../../interfaces/Book.interface";
+import { useGetBooksQuery } from "../../apis/bookApi";
+import { Link } from "react-router-dom";
 
 const sampleProduct: IBook = {
-  _id: '1',
-  title: 'Harry Potter',
-  author: 'JK rowling',
-  price: '$100',
+  _id: "1",
+  title: "Harry Potter",
+  author: "JK rowling",
+  price: "$100",
   image:
-    'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80',
-  genre: ['Horror'],
-  description: 'Harry potter 2000',
-  user: '',
+    "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80",
+  genre: ["Horror"],
+  description: "Harry potter 2000",
+  user: "",
 };
 
 const UserBooks = () => {
-  const { data, isLoading, isError } = useGetBooksQuery()
+  const { data, isLoading, isError } = useGetBooksQuery();
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
 
   return (
     <div>
-      <Title order={2} mb={'md'}>
+      <Title order={2} mb={"md"}>
         My Books
       </Title>
       <Grid gutter="xl">
@@ -53,12 +53,12 @@ const UserBooks = () => {
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
 
   section: {
     borderBottom: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
@@ -70,7 +70,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   label: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
     height: 40,
@@ -82,18 +82,18 @@ const UserProductCard = (props: IBook) => {
   const { _id, image, title, author, description, genre, price } = props;
 
   const features = genre?.map((gen) => (
-    <Badge color={theme.colorScheme === 'dark' ? 'dark' : 'gray'} key={gen}>
+    <Badge color={theme.colorScheme === "dark" ? "dark" : "gray"} key={gen}>
       {gen}
     </Badge>
   ));
 
-  console.log('features', features, genre);
+  console.log("features", features, genre);
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
         <Image
-          styles={{ image: { objectFit: 'cover' } }}
+          styles={{ image: { objectFit: "cover" } }}
           src={image}
           alt={title}
           height={180}
@@ -121,17 +121,18 @@ const UserProductCard = (props: IBook) => {
           </>
         )}
       </Card.Section>
-
-      <Group mt="xs">
-        <Link to={`/product/${_id}`}>
-        <Button mt={"sm"} size="sm" color="red" >
-              Remove Post
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Link to={`/product/${_id}`}>
+            <Button mt={"sm"} size="sm" >
+              Go to Post
             </Button>
-        </Link>
-      </Group>
+          </Link>
+          <Button mt={"sm"} size="sm" color="red">
+            Remove Post
+          </Button>
+        </div>
     </Card>
   );
 };
 
 export default UserBooks;
-
