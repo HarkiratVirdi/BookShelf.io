@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseURL } from '../config';
 import { IBook } from '../interfaces/Book.interface';
+import { getCookie } from '../utils';
 
 // Define a service using a base URL and expected endpoints
 export const bookApi = createApi({
@@ -18,8 +19,16 @@ export const bookApi = createApi({
     }),
     deleteBook: builder.mutation({
       query: (id: string) => `/products/book/${id}`
+    }),
+    createBook: builder.mutation({
+      query: (body) => ({
+        url: '/products/book',
+        method: 'POST', 
+        body,
+        headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
+      }) 
     })
   }),
 });
 
-export const { useGetBooksQuery, useGetBookByCategoryQuery, useGetBookByIdQuery, useDeleteBookMutation } = bookApi;
+export const { useGetBooksQuery, useGetBookByCategoryQuery, useGetBookByIdQuery, useDeleteBookMutation, useCreateBookMutation } = bookApi;

@@ -75,6 +75,11 @@ const UserAccountIcon = () => {
           <Menu.Item icon={<IconSettings size={14} />}>Account</Menu.Item>
           <Menu.Divider />
         </Link>
+
+        <Link to="/manageBooks">
+          <Menu.Item icon={<IconSettings size={14} />}>Manage books</Menu.Item>
+        </Link>
+
         <Link to="/orderHistory">
           <Menu.Item icon={<IconMenuOrder size={14} />}>
             Order History
