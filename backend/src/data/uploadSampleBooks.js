@@ -13,7 +13,7 @@ async function uploadSampleBooks() {
       const formData = new FormData();
       formData.append('title', bookData.title);
       formData.append('author', bookData.author);
-      formData.append('genre', bookData.genre.join(','));
+      formData.append('genre', JSON.stringify(bookData.genre));
       formData.append('price', bookData.price);
       formData.append('description', bookData.description);
 
