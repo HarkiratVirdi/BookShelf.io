@@ -13,7 +13,6 @@ import OrderHistory from './pages/OrderHistory/index.page';
 import UserBooks from './pages/UserBooks/index.page';
 import ManageBooks from './pages/ManageBooks/index.page';
 
-
 function App() {
   return (
     <div className="App">
@@ -28,7 +27,6 @@ function App() {
           <Route path="/useraccount" element={<UserAccount />} />
           <Route path="/orderHistory" element={<OrderHistory />} />
           <Route path="/userbooks" element={<UserBooks />} />
-          <Route path="/manageBooks" element={<ManageBooks />} />
         </Routes>
       </BrowserRouter>
     </div>
