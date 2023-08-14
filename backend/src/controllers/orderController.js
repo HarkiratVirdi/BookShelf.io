@@ -28,10 +28,21 @@ exports.createOrder = async (req, res) => {
 //get user orders
 exports.getOrders = async (req, res, next) => {
   const userOrders = req.user.orders;
+  const userId = req.user.id;
+  const detailedOrders = [];
 
   try {
-    logger.debug('User found: ' + userOrders);
-    res.status(200).json(createSuccessResponse({ status: 'ok', orders: userOrders }));
+    if(userOrders.length > 0){
+      for (const orderId of userOrders) {
+        const order = await Order.findById(orderId);
+        if (order) {
+          detailedOrders.push(order);
+        }
+      }
+    }
+    
+    logger.debug('Orders found: ' + detailedOrders);
+    res.status(200).json(createSuccessResponse({ status: 'ok', orders: detailedOrders }));
   } catch (error) {
     logger.error({ error, userId }, 'Unable to retrieve user orders');
     next(error);

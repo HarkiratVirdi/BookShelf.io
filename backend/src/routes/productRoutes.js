@@ -10,6 +10,8 @@ const upload = multer({ storage });
 
 router.post('/book', protect, upload.single('image'), bookController.create);
 
+router.get('/books/user', protect, bookController.retrieveUserBooks);
+
 router.get('/books', bookController.retrieve);
 
 router.get('/book/:id', bookController.byId);
