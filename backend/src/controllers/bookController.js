@@ -9,10 +9,11 @@ const mongoose = require('mongoose');
 //create new book
 exports.create = async (req, res) => {
   const imageId = randomUUID();
+  const genres = JSON.parse(req.body.genre);
   const book = new Book({
     title: req.body.title,
     author: req.body.author,
-    genre: req.body.genre,
+    genre: genres,
     price: req.body.price,
     description: req.body.description,
     user: req.user.id,
@@ -47,6 +48,24 @@ exports.retrieve = async (req, res) => {
     if (title) query.title = title;
 
     const bookList = await Book.find(query);
+    res.status(200).json(
+      createSuccessResponse({
+        status: 'ok',
+        books: bookList || [],
+      })
+    );
+  } catch (error) {
+    logger.error({ error }, 'Unable to get any books');
+    res.status(405).json(createErrorResponse(405, 'Error retrieving books'));
+  }
+};
+
+//get books which belong to a user
+exports.retrieveUserBooks = async (req, res) => {
+  try {
+    const currentUser = req.user.id;
+
+    const bookList = await Book.find({user: currentUser});
     res.status(200).json(
       createSuccessResponse({
         status: 'ok',
@@ -146,7 +165,7 @@ exports.delete = async (req, res, next) => {
       res.status(200).json(createSuccessResponse({ status: 'Book deleted: ', id: id }));
     }
   } catch (error) {
-    logger.error({ error, ownerId, id }, 'ERROR. Book is not deleted');
+    logger.error({ error, id }, 'ERROR. Book is not deleted');
     next(error);
   }
 };
