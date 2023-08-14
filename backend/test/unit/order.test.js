@@ -74,13 +74,21 @@ describe('GET /orders', () => {
     };
     const newUser = await User.create(userData);
 
-    // Create a mock order and associate it with the user
-    const orderData = {
+    // Create mock orders and associate them with the user
+    const orderData1 = {
       bookIds: ['bookId1', 'bookId2'],
-      totalPrice: 100,
+      totalPrice: 50,
     };
-    const newOrder = await Order.create(orderData);
-    newUser.orders.push(newOrder._id);
+    const order1 = await Order.create(orderData1);
+    newUser.orders.push(order1._id);
+
+    const orderData2 = {
+      bookIds: ['bookId3', 'bookId4'],
+      totalPrice: 60,
+    };
+    const order2 = await Order.create(orderData2);
+    newUser.orders.push(order2._id);
+
     await newUser.save();
 
     // Log in the user to obtain a token
@@ -101,7 +109,8 @@ describe('GET /orders', () => {
 
     // Assertions on the response body
     expect(response.body.status).toBe('ok');
-    expect(response.body.orders).toHaveLength(1);
-    expect(response.body.orders[0].toString()).toBe(newOrder._id.toString());
+    expect(response.body.orders).toHaveLength(2);
+    expect(response.body.orders[0]._id).toBe(order1._id.toString());
+    expect(response.body.orders[1]._id).toBe(order2._id.toString());
   });
 });
