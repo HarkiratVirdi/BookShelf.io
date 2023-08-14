@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { IBook } from '../../interfaces/Book.interface';
 import { Link } from 'react-router-dom';
+import { BsCartPlus } from 'react-icons/bs';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -36,6 +37,7 @@ const useStyles = createStyles((theme) => ({
     textTransform: 'uppercase',
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
+    height: 40,
   },
 }));
 
@@ -49,11 +51,13 @@ const ProductCard = (props: IBook) => {
     </Badge>
   ));
 
+  console.log('features', features, genre);
+
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
         <Image
-          styles={{ image: { objectFit: 'contain' } }}
+          styles={{ image: { objectFit: 'cover' } }}
           src={image}
           alt={title}
           height={180}
@@ -62,15 +66,15 @@ const ProductCard = (props: IBook) => {
 
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
-          <Text fz="lg" fw={500}>
+          <Text lineClamp={1} fz="lg" fw={500}>
             {title}
           </Text>
-          <Badge size="sm">{author}</Badge>
         </Group>
+        <Badge size="sm">{author}</Badge>
       </Card.Section>
 
       <Card.Section className={classes.section}>
-        <Text mt="md" className={classes.label} c="dimmed">
+        <Text lineClamp={2} mt="md" className={classes.label} c="dimmed">
           {description}
         </Text>
         {features?.length > 0 && (
@@ -87,13 +91,10 @@ const ProductCard = (props: IBook) => {
 
       <Group mt="xs">
         <Link to={`/product/${_id}`}>
-          <Button radius="md" style={{ flex: 1 }}>
+          <Button fullWidth={true} radius="md">
             Go the product page
           </Button>
         </Link>
-        <ActionIcon variant="default" radius="md" size={36}>
-          <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
-        </ActionIcon>
       </Group>
     </Card>
   );

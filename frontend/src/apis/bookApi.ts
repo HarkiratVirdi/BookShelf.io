@@ -8,15 +8,18 @@ export const bookApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
   endpoints: (builder) => ({
     getBookById: builder.query<{status: string, book: IBook}, string>({
-      query: (id) => `/products/book/${id}`,
+      query: (id: string) => `/products/book/${id}`,
     }),
     getBookByCategory: builder.query<any, string>({
-      query: (category) => `/products/books/${category}`,
+      query: (category: string) => `/products/books/${category}`,
     }),
     getBooks: builder.query<{status: string, books: IBook[]}, void>({
-        query: () => `/products/books`,
+        query: () => '/products/books',
     }),
+    deleteBook: builder.mutation({
+      query: (id: string) => `/products/book/${id}`
+    })
   }),
 });
 
-export const { useGetBooksQuery, useGetBookByCategoryQuery, useGetBookByIdQuery } = bookApi;
+export const { useGetBooksQuery, useGetBookByCategoryQuery, useGetBookByIdQuery, useDeleteBookMutation } = bookApi;

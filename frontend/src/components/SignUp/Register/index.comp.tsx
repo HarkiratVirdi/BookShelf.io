@@ -12,6 +12,14 @@ import {
 } from '@mantine/core';
 import { useRegisterMutation } from '../../../apis/authApi';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  fetchInit,
+  onDataFailure,
+  storeUserInfo,
+} from '../../../store/Auth/auth.reducer';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -49,12 +57,34 @@ const Register = ({ changeToLoginPage }: any) => {
     password: '',
     keepLoggedIn: false,
   });
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(['userInfo']);
+  const navigate = useNavigate();
 
   const [registerApi] = useRegisterMutation();
 
-  const onRegisterClick = () => {
-    const data = registerApi(registerState);
-    console.log('data', data);
+  const onRegisterClick = async () => {
+    dispatch(fetchInit());
+    try {
+      const { error, data }: any = await registerApi(registerState);
+      console.log('data', data);
+
+      // if (error) {
+      //   setErrorMsg(error.message);
+      //   return;
+      // }
+
+      if (data.status === 'ok') {
+        //store in cookies
+        console.log('logged in');
+        dispatch(storeUserInfo(data));
+        setCookie('userInfo', data);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log('error', err);
+      dispatch(onDataFailure(err));
+    }
   };
 
   const changeRegisterState = (event: any) => {

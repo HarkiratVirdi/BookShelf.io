@@ -9,12 +9,6 @@ router.post('/register', userController.register);
 
 router.post('/login', userController.login);
 
-router.get('/user', protect, userController.getUser);
-
-router.put('/user', protect, userController.updateUser);
-
-router.delete('/user', protect, userController.deleteUser);
-
 router.post('/user/address', protect, addressController.addAddress);
 
 router.get('/user/address', protect, addressController.getAddress);
@@ -26,5 +20,12 @@ router.delete('/user/address', protect, addressController.deleteAddress);
 router.post('/user/order', protect, orderController.createOrder);
 
 router.get('/user/orders', protect, orderController.getOrders);
+
+router.get('/user', protect, userController.getUser);
+
+router.put('/user', protect, userController.updateUser);
+
+router.delete('/user', protect, userController.deleteUser);
+
 
 module.exports = router;

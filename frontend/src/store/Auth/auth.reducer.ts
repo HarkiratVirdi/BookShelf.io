@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getCookie } from '../../utils';
+
+const userInfo = getCookie('userInfo');
 
 const initialState = {
   isLoading: false,
   errorMsg: '',
-  firstName: '',
-  lastName: '',
-  email: '',
+  firstName:  userInfo?.firstName || '',
+  lastName: userInfo?.lastName || '',
+  email:  userInfo?.email || '',
   password: '',
-  token: '',
+  token: userInfo?.token || '',
 }
 
 export const authSlice = createSlice({
@@ -18,7 +21,6 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     storeUserInfo: (state, action) => {
-      console.log("state", state, action);
       state.isLoading = false;
       state.email = action?.payload?.email;
       state.firstName = action?.payload?.firstName;
