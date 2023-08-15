@@ -6,13 +6,14 @@ import { useSelector } from 'react-redux';
 import { authState } from '../../store/Auth/auth.selector';
 import { useLocation, useNavigate } from 'react-router-dom';
 import UserBooks from '../../components/UserBooks/index.comp';
+import { useDeleteBookMutation } from '../../apis/bookApi';
 
 const UserBooksPage = () => {
   const authStore = useSelector(authState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authStore.email) {
+    if (!authStore?.email) {
       navigate('/login');
     }
   }, []);

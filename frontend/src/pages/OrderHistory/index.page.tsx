@@ -16,8 +16,6 @@ const OrderHistoryPage = () => {
     return <div>Error fetching Order History</div>;
   }
 
-  
-  //return <div> Order History</div>;
   return (
     <>
       <HeaderSearch />

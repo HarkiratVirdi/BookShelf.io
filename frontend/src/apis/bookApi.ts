@@ -6,7 +6,9 @@ import { getCookie } from '../utils';
 // Define a service using a base URL and expected endpoints
 export const bookApi = createApi({
   reducerPath: 'bookApi',
-  baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
+  baseQuery: fetchBaseQuery({ baseUrl: baseURL, 
+    headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`}
+  }),
   endpoints: (builder) => ({
     getBookById: builder.query<{status: string, book: IBook}, string>({
       query: (id: string) => `/products/book/${id}`,
@@ -18,7 +20,11 @@ export const bookApi = createApi({
         query: () => '/products/books',
     }),
     deleteBook: builder.mutation({
-      query: (id: string) => `/products/book/${id}`
+      query: (id: string) => ({
+        url: `/products/book/${id}`,
+        headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
+        method: 'DELETE'
+      }),
     }),
     createBook: builder.mutation({
       query: (body) => ({
