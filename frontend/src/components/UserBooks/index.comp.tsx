@@ -69,6 +69,8 @@ const UserBooks = () => {
   const postNewBook = async () => {
     const data: any = await createBook(formData);
 
+    console.log('data', data);
+
     if (data?.data?.status === 'ok') {
       alert('book posted');
     }
@@ -119,8 +121,8 @@ const UserBooks = () => {
             />
             <TextInput
               label="Price ($)"
-              placeholder="20.00"
-              type="number"
+              placeholder="$20.00"
+              type="text"
               value={formData.price}
               onChange={(event) => handleChange('price', event.target.value)}
               required
@@ -135,7 +137,13 @@ const UserBooks = () => {
                 handleChange('description', event.target.value)
               }
             />
-            <FileInput placeholder="Click to Upload File" label="Image" />
+            <input
+              // value={formData.image}
+              name="image"
+              onChange={(e) => handleChange('image', e)}
+              placeholder="Click to Upload File"
+              type="file"
+            />
           </Grid.Col>
 
           <Grid.Col span={12}>
