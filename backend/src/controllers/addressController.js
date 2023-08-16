@@ -11,7 +11,7 @@ exports.addAddress = async (req, res) => {
 
   const address = new Address({
     addressLine1: req.body.addressLine1,
-    addressLine2: ' '  || req.body.addressLine2,
+    addressLine2: req.body.addressLine2 || ' ',
     city: req.body.city,
     province: req.body.province,
     postalCode: req.body.postalCode,
