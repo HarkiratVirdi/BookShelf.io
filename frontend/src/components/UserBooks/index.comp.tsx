@@ -21,6 +21,9 @@ import {
   useCreateBookMutation,
   useDeleteBookMutation,
   useGetBooksQuery,
+  useGetUserBooksByUserIdQuery,
+  useSaveBookImageMutation,
+  useLazyGetUserBooksByUserIdQuery,
 } from '../../apis/bookApi';
 import { Link } from 'react-router-dom';
 import { BiPlus } from 'react-icons/bi';
@@ -38,7 +41,7 @@ const sampleProduct: IBook = {
 };
 
 const UserBooks = () => {
-  const { data, isLoading, isError } = useGetBooksQuery();
+  const { data, isLoading, isError } = useGetUserBooksByUserIdQuery();
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -46,11 +49,15 @@ const UserBooks = () => {
     genre: '',
     price: '',
     description: '',
-    image: null,
+    imageId: '',
   });
 
-  const [createBook] = useCreateBookMutation();
+  const [bookImage, setBookImage] = useState(null);
 
+  const [retriveNewBooksByUserId] = useLazyGetUserBooksByUserIdQuery();
+
+  const [createBook] = useCreateBookMutation();
+  const [saveBookImage] = useSaveBookImageMutation();
   const handleChange = (field, value) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
@@ -67,13 +74,35 @@ const UserBooks = () => {
   };
 
   const postNewBook = async () => {
-    const data: any = await createBook(formData);
+    const obj = {
+      ...formData,
+      genre: JSON.stringify(formData.genre.split(',')),
+    };
+
+    console.log('obj', obj);
+
+    const data: any = await createBook(obj);
 
     console.log('data', data);
 
     if (data?.data?.status === 'ok') {
       alert('book posted');
     }
+  };
+
+  const onFileUpload = async (e) => {
+    const formDataObj = new FormData();
+    formDataObj.append('file', e, e.name);
+    // formDataObj.append('')
+    // Update the formData object
+    const { data }: any = await saveBookImage(formDataObj);
+
+    console.log('imageData', data);
+
+    if (data?.status === 'ok') {
+      setFormData((prev) => ({ ...prev, imageId: data?.imageId }));
+    }
+    // console.log(e);
   };
 
   return (
@@ -137,22 +166,41 @@ const UserBooks = () => {
                 handleChange('description', event.target.value)
               }
             />
-            <input
-              // value={formData.image}
-              name="image"
-              onChange={(e) => handleChange('image', e)}
-              placeholder="Click to Upload File"
-              type="file"
-            />
+            {!bookImage ? (
+              <input
+                // value={formData.image}
+                type="file"
+                onChange={(e) => {
+                  // setBookImage(e.target.files[0]);
+
+                  onFileUpload(e.target.files[0]);
+                }}
+                placeholder="Click to Upload File"
+              />
+            ) : (
+              <div>
+                <h2>File Details:</h2>
+                <p>File Name: {bookImage.name}</p>
+
+                <p>File Type: {bookImage.type}</p>
+
+                <p>
+                  Last Modified: {bookImage.lastModifiedDate.toDateString()}
+                </p>
+              </div>
+            )}
           </Grid.Col>
 
           <Grid.Col span={12}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Link to="/">
-                <Button mt={'md'} size="md" color="red">
-                  Cancel
-                </Button>
-              </Link>
+              <Button
+                onClick={() => setModalOpen(false)}
+                mt={'md'}
+                size="md"
+                color="red"
+              >
+                Cancel
+              </Button>
               <Button onClick={postNewBook} mt={'md'} size="md" type="submit">
                 Post
               </Button>
@@ -207,8 +255,9 @@ const UserProductCard = (props: IBook) => {
 
     console.log('data', data);
 
-    if (data?.data?.status === 'ok') {
-      alert('deleted book');
+    if (data?.data?.status === 'Book deleted: ') {
+      alert('Book Successfully deleted');
+      window.location.reload();
     }
   };
 
@@ -252,7 +301,14 @@ const UserProductCard = (props: IBook) => {
             Go to Post
           </Button>
         </Link>
-        <Button onClick={() => removeBook(_id)} mt={'sm'} size="sm" color="red">
+        <Button
+          onClick={() => {
+            removeBook(_id);
+          }}
+          mt={'sm'}
+          size="sm"
+          color="red"
+        >
           Remove Post
         </Button>
       </div>

@@ -21,11 +21,6 @@ const PaymentMethod = ({ value, selectValue }: IPaymentMethod) => {
       >
         <Group onChange={changeRadioValue} mt="xs">
           <Radio checked={value === 'Paypal'} value="Paypal" label="Paypal" />
-          <Radio
-            checked={value === 'Cash'}
-            value="Cash"
-            label="Cash on Delivery"
-          />
         </Group>
       </Radio.Group>
     </div>
