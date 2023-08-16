@@ -49,15 +49,12 @@ const UserBooks = () => {
     genre: '',
     price: '',
     description: '',
-    imageId: '',
+    image: null,
   });
 
   const [bookImage, setBookImage] = useState(null);
 
-  const [retriveNewBooksByUserId] = useLazyGetUserBooksByUserIdQuery();
-
   const [createBook] = useCreateBookMutation();
-  const [saveBookImage] = useSaveBookImageMutation();
   const handleChange = (field, value) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
@@ -74,36 +71,41 @@ const UserBooks = () => {
   };
 
   const postNewBook = async () => {
-    const obj = {
-      ...formData,
-      genre: JSON.stringify(formData.genre.split(',')),
-    };
+    const formObj = new FormData();
 
-    console.log('obj', obj);
+    formObj.append('image', formData.image, formData.image.name);
+    formObj.append('title', formData.title);
+    formObj.append('genre', JSON.stringify(formData.genre.split(',')));
+    formObj.append('author', formData.author);
+    formObj.append('price', formData.price);
+    formObj.append('description', formData.description);
 
-    const data: any = await createBook(obj);
+    console.log('obj', formObj);
+
+    const data: any = await createBook(formObj);
 
     console.log('data', data);
 
     if (data?.data?.status === 'ok') {
       alert('book posted');
+      window.location.href = '/';
     }
   };
 
-  const onFileUpload = async (e) => {
-    const formDataObj = new FormData();
-    formDataObj.append('file', e, e.name);
-    // formDataObj.append('')
-    // Update the formData object
-    const { data }: any = await saveBookImage(formDataObj);
+  // const onFileUpload = async (e) => {
+  //   const formDataObj = new FormData();
 
-    console.log('imageData', data);
+  //   // formDataObj.append('')
+  //   // Update the formData object
+  //   const { data }: any = await saveBookImage(formDataObj);
 
-    if (data?.status === 'ok') {
-      setFormData((prev) => ({ ...prev, imageId: data?.imageId }));
-    }
-    // console.log(e);
-  };
+  //   console.log('imageData', data);
+
+  //   if (data?.status === 'ok') {
+  //     setFormData((prev) => ({ ...prev, imageId: data?.imageId }));
+  //   }
+  //   // console.log(e);
+  // };
 
   return (
     <div>
@@ -170,10 +172,14 @@ const UserBooks = () => {
               <input
                 // value={formData.image}
                 type="file"
+                name="image"
                 onChange={(e) => {
                   // setBookImage(e.target.files[0]);
-
-                  onFileUpload(e.target.files[0]);
+                  setFormData((prev) => ({
+                    ...prev,
+                    image: e.target.files[0],
+                  }));
+                  // onFileUpload(e.target.files[0]);
                 }}
                 placeholder="Click to Upload File"
               />
