@@ -53,7 +53,7 @@ const Checkout = () => {
             <Text weight={700} fz="lg">
               Review Items
             </Text>
-            {cartBooks.map((product) => (
+            {cartBooks?.map((product) => (
               <div
                 key={product._id}
                 style={{
@@ -169,7 +169,7 @@ const Checkout = () => {
                       }).then((data: any) => {
                         console.log('data', data);
                         alert('Transaction completed by ' + userSlice.email);
-                        navigate('/');
+                        window.location.href = '/';
                       });
                     });
                   }}

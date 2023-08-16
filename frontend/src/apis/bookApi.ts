@@ -33,8 +33,19 @@ export const bookApi = createApi({
         body,
         headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
       }) 
+    }),
+    saveBookImage: builder.mutation({
+      query: (body) => ({
+        url: '/products/books/saveImage',
+        method: 'POST',
+        body,
+        headers: {Authorization: `Bearer ${getCookie('userInfo')?.token}`},
+      })
+    }),
+    getUserBooksByUserId: builder.query<any, void>({
+      query: () =>  '/products/books/user'
     })
   }),
 });
 
-export const { useGetBooksQuery, useGetBookByCategoryQuery, useGetBookByIdQuery, useDeleteBookMutation, useCreateBookMutation } = bookApi;
+export const { useGetBooksQuery, useLazyGetUserBooksByUserIdQuery,  useGetUserBooksByUserIdQuery, useSaveBookImageMutation, useGetBookByCategoryQuery, useGetBookByIdQuery, useDeleteBookMutation, useCreateBookMutation } = bookApi;
