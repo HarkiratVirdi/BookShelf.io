@@ -4,18 +4,15 @@ const mongoose = require('mongoose');
 const User = require('../../src/models/user');
 const Order = require('../../src/models/order');
 
-describe('POST /order', () => {
-  beforeEach(async () => {
+describe('Order-related API', () => {
+  let token;
+  let newUser;
+
+  beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URI);
-  });
+    await User.deleteMany();
+    await Order.deleteMany();
 
-  beforeEach( async () => {await User.deleteMany()});
-
-  afterEach(async () => {
-    await mongoose.connection.close();
-  });
-
-  test('should create a new order for an authenticated user', async () => {
     // Create a user with known credentials in the database
     const userData = {
       firstName: 'John',
@@ -23,7 +20,7 @@ describe('POST /order', () => {
       email: 'john@example.com',
       password: 'securepassword',
     };
-    const newUser = await User.create(userData);
+    newUser = await User.create(userData);
 
     // Log in the user to obtain a token
     const loginResponse = await request(app)
@@ -33,8 +30,14 @@ describe('POST /order', () => {
         password: userData.password,
       });
 
-    const token = loginResponse.body.token;
+    token = loginResponse.body.token;
+  });
 
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+
+  test('should create a new order for an authenticated user', async () => {
     // Create a mock order data
     const orderData = {
       bookIds: ['bookId1', 'bookId2'],
@@ -51,47 +54,25 @@ describe('POST /order', () => {
     // Assertions on the response body
     expect(response.body.message).toBe('Order is successfully saved');
   });
-});
 
-describe('GET /orders', () => {
-  beforeEach(async () => {
-    await mongoose.connect(process.env.MONGO_URI);
-  });
-
-  beforeEach( async () => {await User.deleteMany()});
-
-  afterEach(async () => {
-    await mongoose.connection.close();
-  });
 
   test('should get user orders for an authenticated user', async () => {
-    // Create a user with known credentials in the database
-    const userData = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@example.com',
-      password: 'securepassword',
-    };
-    const newUser = await User.create(userData);
 
-    // Create a mock order and associate it with the user
-    const orderData = {
+    // Create mock orders and associate them with the user
+    const orderData1 = {
       bookIds: ['bookId1', 'bookId2'],
-      totalPrice: 100,
+      totalPrice: 50,
     };
-    const newOrder = await Order.create(orderData);
-    newUser.orders.push(newOrder._id);
+    const order1 = await Order.create(orderData1);
+    newUser.orders.push(order1._id);
+
+    const orderData2 = {
+      bookIds: ['bookId3', 'bookId4'],
+      totalPrice: 60,
+    };
+    const order2 = await Order.create(orderData2);
+    newUser.orders.push(order2._id);
     await newUser.save();
-
-    // Log in the user to obtain a token
-    const loginResponse = await request(app)
-      .post('/api/users/login')
-      .send({
-        email: userData.email,
-        password: userData.password,
-      });
-
-    const token = loginResponse.body.token;
 
     // Send a GET request to the /orders route with the token
     const response = await request(app)
@@ -101,7 +82,8 @@ describe('GET /orders', () => {
 
     // Assertions on the response body
     expect(response.body.status).toBe('ok');
-    expect(response.body.orders).toHaveLength(1);
-    expect(response.body.orders[0].toString()).toBe(newOrder._id.toString());
+    expect(response.body.orders).toHaveLength(3);
+    expect(response.body.orders[1]._id).toBe(order1._id.toString());
+    expect(response.body.orders[2]._id).toBe(order2._id.toString());
   });
 });
