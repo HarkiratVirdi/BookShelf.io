@@ -21,57 +21,66 @@ import { fetchBookById } from '../../apis/customApi';
 const Orderhistory = () => {
   const { data, isLoading, isError } = useGetOrdersQuery();
   const [orderBooks, setOrderBooks] = useState([]);
-  console.log('order data', data);
 
   useEffect(() => {
     const fetchBooks = async () => {
+      console.log('orders', data?.orders);
       const bookDetailsPromises = data?.orders?.map(({ bookIds }) =>
         fetchBookById(bookIds[0])
       );
 
+      console.log('promises', bookDetailsPromises);
+
       const bookDetails = await Promise.all(bookDetailsPromises);
-      setOrderBooks(bookDetails);
+
+      console.log('book Details', bookDetails);
+
+      const bookData = bookDetails
+        ?.map((eBookDetails) => {
+          if (eBookDetails?.data?.book?.title) {
+            return eBookDetails?.data?.book;
+          }
+        })
+        .filter((ebook) => ebook !== undefined);
+
+      console.log('ebook data', bookData);
+
+      const orders = data?.orders?.filter((eOrder) => {
+        return bookData.map(({ _id }) => _id).includes(eOrder.bookIds[0]);
+      });
+
+      console.log('orders', orders);
+
+      const combinedData = orders.map((eOrder) => ({
+        ...eOrder,
+        bookDetails: bookData.find((eb) => eb._id === eOrder.bookIds[0]),
+      }));
+
+      console.log('combined data', combinedData);
+      setOrderBooks(combinedData);
     };
 
-    fetchBooks();
-  }, []);
-
-  // const orderTotal = (items: IBook[]): number => {
-  //   let total = 0;
-  //   for (const i of items) {
-  //     total += Number(extractPrice(i.price));
-  //   }
-  //   return total;
-  // };
+    if (!isLoading) fetchBooks();
+  }, [isLoading]);
 
   // console.log('ORDER TOTAL: ' + orderTotal(orderHistory[0].items));
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
 
-  const GetBookDetails = async (id) => {
-    console.log('id', id);
-    const data: any = await useGetBookByIdQuery(id);
-
-    console.log('data', data);
-    return data;
-  };
-
   return (
     <div>
       <Text weight={700} fz="xl">
         Order History
       </Text>
-      {data?.orders?.length === 0 ? (
+      {orderBooks?.length === 0 ? (
         <Text weight={700}>Order history is currently empty</Text>
       ) : (
         <ul style={{ listStyle: 'none', padding: 5 }}>
-          {orderBooks.map((eOrderBook) => {
-            if (eOrderBook.book === null) return '';
-
+          {orderBooks?.map((eOrderBook) => {
             return (
               <li
-                key={eOrderBook._id}
+                key={eOrderBook?.bookDetails?._id}
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'auto 1fr auto',
@@ -86,8 +95,8 @@ const Orderhistory = () => {
                   }}
                 >
                   <img
-                    src={eOrderBook.image}
-                    alt={eOrderBook.title}
+                    src={eOrderBook?.bookDetails?.image}
+                    alt={eOrderBook?.bookDetails?.title}
                     style={{
                       width: '100px',
                       height: '100px',
@@ -100,88 +109,28 @@ const Orderhistory = () => {
                 </div>
 
                 <div>
-                  <Text weight={700}>{eOrderBook.title}</Text> by{' '}
-                  {eOrderBook.author}
+                  <Text weight={700}>{eOrderBook?.bookDetails?.title}</Text> by{' '}
+                  {eOrderBook?.bookDetails?.author}
                 </div>
                 <div className="flex items-center">
                   {/* <span className="mr-2">${order.price}</span> */}
                   <div className="w-36">
-                    <Link to={`/product/${eOrderBook._id}`}>
+                    <Link to={`/product/${eOrderBook?.bookDetails?._id}`}>
                       <Button ml={'sm'}>Go to Product</Button>
                     </Link>
+                    <Text>Total: ${eOrderBook?.totalPrice}</Text>
+
+                    <Text>
+                      Purchased On:{' '}
+                      {new Date(eOrderBook?.createdAt).toUTCString()}
+                    </Text>
                   </div>
                 </div>
               </li>
             );
           })}
-
-          {data?.orders?.length > 0 &&
-            data?.orders?.map((order, index) => (
-              <div key={order._id}>
-                <Text weight={700}>Order #{order._id}</Text>
-                <ul style={{ listStyle: 'none', padding: 5 }}>
-                  {/* {order?.booksIds?.map(async (item) => {
-                    console.log('get book', item);
-                    const getBook = await fetchBook(item);
-                    return (
-                      <li
-                        key={item}
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'auto 1fr auto',
-                          padding: '20px',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <img
-                            src={item}
-                            alt={item}
-                            style={{
-                              width: '100px',
-                              height: '100px',
-                              borderRadius: '10%',
-                              objectFit: 'cover',
-                              marginRight: '10px',
-                              marginLeft: '10px',
-                            }}
-                          />
-                        </div>
-
-                        <div>
-                          <Text weight={700}>{item.title}</Text> by{' '}
-                          {item.author}
-                        </div>
-                        <div className="flex items-center">
-                          <span className="mr-2">${order.totalPrice}</span>
-                          <div className="w-36">
-                            <Link to={`/product/${item._id}`}>
-                              <Button ml={'sm'}>Go to Product</Button>
-                            </Link>
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })} */}
-                </ul>
-                <Text weight={700}>Order total: ${order?.totalPrice}</Text>
-                <Divider />
-              </div>
-            ))}
         </ul>
       )}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '20px',
-        }}
-      ></div>
     </div>
   );
 };
